@@ -1,13 +1,13 @@
 package se.ju23.typespeeder.ui;
 
 import se.ju23.typespeeder.util.UserInput;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class Menu implements MenuService {
+    Scanner input = new Scanner(System.in);
     private String language = "svenska";
 
     @Override
@@ -46,7 +46,6 @@ public class Menu implements MenuService {
             menuOptions = getMenuOptionsEnglish();
             System.out.println("Menu Alternativ - " + language + ": ");
         }
-
         for (String option : menuOptions) {
             System.out.println(option);
         }
@@ -54,7 +53,6 @@ public class Menu implements MenuService {
 
     public void languageChoice() {
         try {
-            Scanner input = new Scanner(System.in);
             System.out.println("Välj språk (svenska/engelska):");
             String selectedLanguage = "svenska";
 
@@ -62,7 +60,7 @@ public class Menu implements MenuService {
                 if (input.hasNextLine()) {
                     selectedLanguage = UserInput.readString().toLowerCase();
                 } else {
-                    System.out.println("No input detected. Please enter the language choice.");
+                    System.out.println("No input detected. Please enter a language choice.");
                 }
             }
             if (selectedLanguage.equals("svenska") || selectedLanguage.equals("s")) {
