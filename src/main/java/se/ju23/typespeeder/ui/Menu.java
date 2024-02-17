@@ -13,7 +13,6 @@ public class Menu implements MenuService {
     @Override
     public List<String> getMenuOptions() {
         List<String> options = new ArrayList<>();
-
         options.add("1. Spela spel");
         options.add("2. Avsluta spel");
         options.add("3. Lägg till spelare");
@@ -25,7 +24,6 @@ public class Menu implements MenuService {
 
     public List<String> getMenuOptionsEnglish() {
         List<String> options = new ArrayList<>();
-
         options.add("1. Play game");
         options.add("2. Finish game");
         options.add("3. Add player");
