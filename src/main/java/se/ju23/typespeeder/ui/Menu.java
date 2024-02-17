@@ -1,11 +1,13 @@
 package se.ju23.typespeeder.ui;
 
+import org.springframework.stereotype.Component;
 import se.ju23.typespeeder.util.UserInput;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+@Component
 public class Menu implements MenuService {
     Scanner input = new Scanner(System.in);
     private String language = "svenska";
