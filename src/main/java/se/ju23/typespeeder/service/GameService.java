@@ -15,6 +15,6 @@ public class GameService {
 
     public void startGame() {
         gameLogic.startGame();
-        // Anropa andra metoder på gameLogic vid behov
+        
     }
 }
