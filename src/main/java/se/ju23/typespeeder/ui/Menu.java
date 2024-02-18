@@ -1,79 +1,79 @@
 package se.ju23.typespeeder.ui;
 
 import org.springframework.stereotype.Component;
-
-import java.util.Arrays;
+import se.ju23.typespeeder.util.UserInput;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
 
 @Component
 public class Menu implements MenuService {
+    Scanner input = new Scanner(System.in);
+    private String language = "svenska";
 
     @Override
-    public void loginUser(String username, String password) {
-
+    public List<String> getMenuOptions() {
+        List<String> options = new ArrayList<>();
+        options.add("1. Spela spel");
+        options.add("2. Avsluta spel");
+        options.add("3. Lägg till spelare");
+        options.add("4. Mina resultat");
+        options.add("5. Resultatlista");
+        options.add("6. Byt till engelska");
+        return options;
     }
 
-    @Override
-    public void updateUsername(String oldUsername, String newUsername) {
-
-    }
-
-    @Override
-    public void updatePassword(String username, String newPassword) {
-
-    }
-
-    @Override
-    public void updateDisplayName(String username, String newDisplayName) {
-
+    public List<String> getMenuOptionsEnglish() {
+        List<String> options = new ArrayList<>();
+        options.add("1. Play game");
+        options.add("2. Finish game");
+        options.add("3. Add player");
+        options.add("4. My results");
+        options.add("5. Result list");
+        options.add("6. Switch to swedish");
+        return options;
     }
 
     @Override
     public void displayMenu() {
-        System.out.println("Huvudmeny:");
-        for (String option : getMenuOptions()) {
+        languageChoice();
+        List<String> menuOptions;
+        if (language.equalsIgnoreCase("svenska")) {
+            menuOptions = getMenuOptions();
+            System.out.println("Meny Alternativ - " + language + ": ");
+        } else {
+            menuOptions = getMenuOptionsEnglish();
+            System.out.println("Menu Alternativ - " + language + ": ");
+        }
+        for (String option : menuOptions) {
             System.out.println(option);
         }
     }
 
-    @Override
-    public List<String> getMenuOptions() {
-        return Arrays.asList(
-                "1. Logga in",                  // Alternativ för att logga in
-                "2. Konto Hantering",           // Hantera konto (uppdatera information, osv)
-                "3. Språkval (Svenska/Engelska)", // Välja språk för spelet
-                "4. Spela",                     // Starta eller fortsätta ett spel
-                "5. Nyheter och Patch-information" // Information om uppdateringar och nyheter
-        );
-    }
+    public void languageChoice() {
+        try {
+            System.out.println("Välj språk (svenska/engelska):");
+            String selectedLanguage = "svenska";
 
-    @Override
-    public void displaySettingsMenu() {
-
-    }
-
-    @Override
-    public void displayLanguageSelectionMenu() {
-
-    }
-
-    @Override
-    public void displayRankings() {
-
-    }
-
-    @Override
-    public void displayPlayerStats(String username) {
-
-    }
-
-    @Override
-    public void displayNewsUpdates() {
-
-    }
-
-    @Override
-    public void displayPatchNotes() {
-
+            while (selectedLanguage.isBlank()) {
+                if (input.hasNextLine()) {
+                    selectedLanguage = UserInput.readString().toLowerCase();
+                } else {
+                    System.out.println("No input detected. Please enter a language choice.");
+                }
+            }
+            if (selectedLanguage.equals("svenska") || selectedLanguage.equals("s")) {
+                System.out.println("Svenska valt.");
+                language = "svenska";
+            } else if (selectedLanguage.equals("engelska") || selectedLanguage.equals("e")) {
+                language = "engelska";
+            } else {
+                System.out.println("Invalid language selection. Default language set to English.");
+                language = "English";
+            }
+        } catch (NoSuchElementException e) {
+            throw new NoSuchElementException(e);
+        }
     }
 }

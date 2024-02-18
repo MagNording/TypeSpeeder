@@ -1,7 +1,6 @@
 package se.ju23.typespeeder.entity;
 
 import jakarta.persistence.*;
-import jdk.jfr.Enabled;
 
 @Entity
 @Table(name = "results")
@@ -14,13 +13,13 @@ public class Result {
 
     @ManyToOne
     @JoinColumn(name = "userid", referencedColumnName = "id")
-    private User user;
+    private Player player;
 
     public Result() {}
 
-    public Result(int result, User user) {
+    public Result(int result, Player player) {
         this.result = result;
-        this.user = user;
+        this.player = player;
     }
 
     public int getResult() {
@@ -31,12 +30,12 @@ public class Result {
         this.result = result;
     }
 
-    public User getUser() {
-        return user;
+    public Player getUser() {
+        return player;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUser(Player player) {
+        this.player = player;
     }
 
     public int getId() {
@@ -48,7 +47,7 @@ public class Result {
         return "Result{" +
                 "id=" + id +
                 ", result=" + result +
-                ", user=" + user +
+                ", user=" + player +
                 '}';
     }
 

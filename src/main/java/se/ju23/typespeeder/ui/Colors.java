@@ -1,6 +1,6 @@
 package se.ju23.typespeeder.ui;
 
-public enum ConsoleColor {
+public enum Colors {
     RESET("\u001B[0m"),
     RED("\u001B[31m"),
     GREEN("\u001B[32m"),
@@ -9,7 +9,7 @@ public enum ConsoleColor {
 
     private final String code;
 
-    ConsoleColor(String code) {
+    Colors(String code) {
         this.code = code;
     }
 
