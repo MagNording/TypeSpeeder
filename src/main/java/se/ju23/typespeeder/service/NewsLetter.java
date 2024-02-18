@@ -3,6 +3,7 @@ package se.ju23.typespeeder.service;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.time.Month;
 
 
 public class NewsLetter {
@@ -13,7 +14,7 @@ public class NewsLetter {
         // Example content between 100 and 200 characters long
         this.content = "This is a sample content for the NewsLetter class. It is specifically" +
                 " designed to meet the test requirements of having 100 to 200 characters.";
-        this.publishDateTime = LocalDateTime.now(); // Default to current time
+        this.publishDateTime = LocalDateTime.of(2024, Month.FEBRUARY, 23, 15, 0);
     }
 
     // Constructor with validation for content length
