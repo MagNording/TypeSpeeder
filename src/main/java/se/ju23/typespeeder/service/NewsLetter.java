@@ -1,10 +1,13 @@
 package se.ju23.typespeeder.service;
 
+import org.springframework.stereotype.Component;
+
 import java.time.LocalDateTime;
+
 
 public class NewsLetter {
     private String content;
-    private LocalDateTime publishDateTime;
+    public LocalDateTime publishDateTime;
 
     public NewsLetter() {
         // Example content between 100 and 200 characters long

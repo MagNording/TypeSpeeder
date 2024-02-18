@@ -1,6 +1,9 @@
 package se.ju23.typespeeder;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import se.ju23.typespeeder.service.NewsLetter;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -10,6 +13,7 @@ import java.time.format.DateTimeFormatter;
 
 import static org.assertj.core.api.Fail.fail;
 import static org.junit.jupiter.api.Assertions.*;
+
 
 public class NewsLetterTest {
 
