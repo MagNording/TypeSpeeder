@@ -1,46 +1,45 @@
 package se.ju23.typespeeder.util;// magnus nording, magnus.nording@iths.se
+import org.springframework.stereotype.Service;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class UserInput {
-    private static final UserInput instance = new UserInput();
-    private static final Scanner input;
+@Service
+public class UserInputServiceImpl implements UserInputService {
 
-    static {
-        input = new Scanner(System.in);
+    private final Scanner input;
+
+    public UserInputServiceImpl() {
+        this.input = new Scanner(System.in);
     }
 
-    private UserInput() {}
-
-    public static UserInput getInstance() {
-        return instance;
-    }
-
-    public static String readString() {
+    public String readString() {
         String stringValue;
+        // Define a regex pattern to match the allowed characters
+        String pattern = "[-a-zA-ZåäöÅÄÖ0-9@._ ]+";
         do {
+            System.out.print("Enter your input: ");
             stringValue = input.nextLine().trim();
             if (stringValue.isBlank()) {
-                System.out.print("Ingen inmatning gjord, försök igen.\n > ");
+                System.out.println("No input made, try again.\n > ");
+            } else if (!stringValue.matches(pattern)) {
+                // If input doesn't match the pattern, inform the user and prompt again
+                System.out.println("Invalid input. Only letters, numbers, spaces, '-', ',', '@', '.', and '_' are allowed.\n > ");
             }
-        } while (stringValue.isBlank());
+        } while (stringValue.isBlank() || !stringValue.matches(pattern));
         return stringValue;
     }
 
-    public static int readInt() {
+    public int readInt() {
         int intValue;
         while (true) {
             try {
-                String inputLine = input.nextLine();
-                if (inputLine.isEmpty()) {
-                    System.out.println("Ingen inmatning gjord, försök igen.");
+                String inputLine = readString();
+                intValue = Integer.parseInt(inputLine);
+                if (intValue < 0) {
+                    System.out.println("Värdet måste vara positivt, försök igen.");
                 } else {
-                    intValue = Integer.parseInt(inputLine);
-                    if (intValue < 0) {
-                        System.out.println("Värdet måste vara positivt, försök igen.");
-                    } else {
-                        break;
-                    }
+                    break;
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Felaktig inmatning, försök igen.");
@@ -49,20 +48,16 @@ public class UserInput {
         return intValue;
     }
 
-    public static int readInt(int min, int max) {
+    public int readInt(int min, int max) {
     int intValue;
     while (true) {
         try {
-            String inputLine = input.nextLine();
-            if (inputLine.isEmpty()) {
-                System.out.println("Ingen inmatning gjord, försök igen.");
+            String inputLine = readString();
+            intValue = Integer.parseInt(inputLine);
+            if (intValue < min || intValue > max) {
+                System.out.printf("Värdet måste vara mellan %d och %d, försök igen.\n", min, max);
             } else {
-                intValue = Integer.parseInt(inputLine);
-                if (intValue < min || intValue > max) {
-                    System.out.printf("Värdet måste vara mellan %d och %d, försök igen.\n", min, max);
-                } else {
-                    break;
-                }
+                break;
             }
         } catch (NumberFormatException e) {
             System.out.println("Felaktig inmatning, försök igen.");
@@ -72,10 +67,10 @@ public class UserInput {
     }
 
 
-    public static double readDouble() {
+    public double readDouble() {
         double doubleValue;
         while (true) {
-            String userInput = input.nextLine();
+            String userInput = readString();
             userInput = userInput.replace(",", ".");
             try {
                 doubleValue = Double.parseDouble(userInput);
@@ -90,7 +85,7 @@ public class UserInput {
         }
     }
 
-    public static long readLong() {
+    public long readLong() {
         long longValue;
         while (true) {
             try {
@@ -110,13 +105,13 @@ public class UserInput {
         return longValue;
     }
 
-    public static boolean readJaNej() {
+    public boolean readJaNej() {
         while (true) {
             System.out.print("Ange 'j' för ja eller 'n' för nej: ");
-            String input = UserInput.readString();
-            if (input.equalsIgnoreCase("j")) {
+            String userInput = readString();
+            if (userInput.equalsIgnoreCase("j")) {
                 return true;
-            } else if (input.equalsIgnoreCase("n")) {
+            } else if (userInput.equalsIgnoreCase("n")) {
                 return false;
             } else {
                 System.out.println("Ogiltigt val. Ange antingen 'j' eller 'n'.");
@@ -124,13 +119,13 @@ public class UserInput {
         }
     }
 
-    public static boolean readYesNo() {
+    public boolean readYesNo() {
         while (true) {
             System.out.print("Enter 'y' for yes or 'n' for no: ");
-            String input = UserInput.readString();
-            if (input.equalsIgnoreCase("y")) {
+            String userInput = readString();
+            if (userInput.equalsIgnoreCase("y")) {
                 return true;
-            } else if (input.equalsIgnoreCase("n")) {
+            } else if (userInput.equalsIgnoreCase("n")) {
                 return false;
             } else {
                 System.out.println("Invalid choice. Enter either 'y' or 'n'.");
@@ -146,17 +141,12 @@ public class UserInput {
                 originalString.substring(1);
     }
 
-    public static void println(String line) {
-        System.out.println(line);
+    public static void println(String message) {
+        System.out.println(message);
     }
 
-    public static void print(String line) {
-        System.out.print(line);
+    public static void print(String message) {
+        System.out.print(message);
     }
 
-    public void closeScanner() {
-        if (input != null) {
-            input.close();
-        }
-    }
 }
