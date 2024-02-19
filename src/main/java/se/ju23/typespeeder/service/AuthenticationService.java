@@ -5,30 +5,33 @@ import org.springframework.stereotype.Service;
 import se.ju23.typespeeder.entity.Player;
 import se.ju23.typespeeder.entity.PlayerRepo;
 import se.ju23.typespeeder.ui.Menu;
-import se.ju23.typespeeder.util.UserInput;
+import se.ju23.typespeeder.util.UserInputService;
+
 
 @Service
 public class AuthenticationService {
 
     private final Menu menu;
     private final PlayerService playerService;
-    private final PlayerRepo playerRepo; // Assuming PlayerRepo is an interface that extends, for example, JpaRepository
+    private final PlayerRepo playerRepo;
+    private final UserInputService userInputService;
 
     @Autowired
-    public AuthenticationService(Menu menu, PlayerService playerService, PlayerRepo playerRepo) {
+    public AuthenticationService(Menu menu, PlayerService playerService, PlayerRepo playerRepo, UserInputService userInputService) {
         this.menu = menu;
         this.playerService = playerService;
         this.playerRepo = playerRepo; // Injecting PlayerRepo
+        this.userInputService = userInputService;
     }
 
     public void login() {
         boolean runProgram = true;
         do {
             System.out.println("Enter your username: ");
-            String userNameInput = UserInput.readString();
+            String userNameInput = userInputService.readString();
 
             System.out.println("Enter corresponding password: ");
-            String passwordInput = UserInput.readString();
+            String passwordInput = userInputService.readString();
 
             Player playerFound = playerRepo.findByUsernameAndPassword(userNameInput, passwordInput);
 

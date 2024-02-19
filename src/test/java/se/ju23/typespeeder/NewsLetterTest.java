@@ -43,7 +43,8 @@ public class NewsLetterTest {
             assertTrue(contentValue.length() >= 100, "Content field length should be at least 100 characters.");
             assertTrue(contentValue.length() <= 200, "Content field length should be at most 200 characters.");
 
-        } catch (ClassNotFoundException | NoSuchFieldException | NoSuchMethodException | InstantiationException | IllegalAccessException | java.lang.reflect.InvocationTargetException e) {
+        } catch (ClassNotFoundException | NoSuchFieldException | NoSuchMethodException |
+                 InstantiationException | IllegalAccessException | java.lang.reflect.InvocationTargetException e) {
             fail("Error occurred while testing NewsLetter content field length.", e);
         }
     }

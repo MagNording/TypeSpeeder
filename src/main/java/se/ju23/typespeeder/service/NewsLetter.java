@@ -1,7 +1,5 @@
 package se.ju23.typespeeder.service;
 
-import org.springframework.stereotype.Component;
-
 import java.time.LocalDateTime;
 import java.time.Month;
 

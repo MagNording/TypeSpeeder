@@ -1,7 +1,8 @@
 package se.ju23.typespeeder.ui;
 
 import org.springframework.stereotype.Component;
-import se.ju23.typespeeder.util.UserInput;
+import se.ju23.typespeeder.util.UserInputService;
+import se.ju23.typespeeder.util.UserInputServiceImpl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -11,6 +12,12 @@ import java.util.Scanner;
 public class Menu implements MenuService {
     Scanner input = new Scanner(System.in);
     private String language = "svenska";
+
+    private UserInputService userInputService;
+
+    public void setUserInputService(UserInputService userInputService) {
+        this.userInputService = userInputService;
+    }
 
     @Override
     public List<String> getMenuOptions() {
@@ -58,7 +65,7 @@ public class Menu implements MenuService {
 
             while (selectedLanguage.isBlank()) {
                 if (input.hasNextLine()) {
-                    selectedLanguage = UserInput.readString().toLowerCase();
+                    selectedLanguage = userInputService.readString().toLowerCase();
                 } else {
                     System.out.println("No input detected. Please enter a language choice.");
                 }
