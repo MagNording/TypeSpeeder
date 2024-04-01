@@ -1,5 +1,8 @@
 package se.ju23.typespeeder.logic;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class GameLogic implements IGameLogic{
 
     @Override

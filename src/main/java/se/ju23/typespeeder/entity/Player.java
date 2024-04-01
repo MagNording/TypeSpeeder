@@ -10,16 +10,18 @@ import java.util.List;
 public class Player {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private int id;
 
     private String username;
     private String password;
+
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private Role role;
+
     private String playername;
 
-    @OneToMany(mappedBy = "players", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "player", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Result> results;
 
     public Player() {}
@@ -31,8 +33,7 @@ public class Player {
         this.role = role;
     }
 
-
-    public long getId() {
+    public int getId() {
         return id;
     }
 
@@ -78,14 +79,11 @@ public class Player {
 
     @Override
     public String toString() {
-        return "Player{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", role=" + role +
-                ", playername='" + playername + '\'' +
-                ", results=" + results +
-                '}';
+        return "\n\033[1mPlayerid:\033[0m " + id + " | " +
+                "\033[1mUsername:\033[0m " + username + " | " +
+                "\033[1mPassword:\033[0m " + password + " | " +
+                "\033[1mGamertag: \033[0m " + playername + " | " +
+                "\033[1mRole:\033[0m " + role;
     }
 }
 

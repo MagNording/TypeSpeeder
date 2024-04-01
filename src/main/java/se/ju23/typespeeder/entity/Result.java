@@ -12,7 +12,7 @@ public class Result {
     private int result;
 
     @ManyToOne
-    @JoinColumn(name = "userid", referencedColumnName = "id")
+    @JoinColumn(name = "playername", referencedColumnName = "id")
     private Player player;
 
     public Result() {}

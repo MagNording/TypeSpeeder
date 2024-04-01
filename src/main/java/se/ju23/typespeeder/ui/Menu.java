@@ -70,14 +70,19 @@ public class Menu implements MenuService {
                     System.out.println("No input detected. Please enter a language choice.");
                 }
             }
-            if (selectedLanguage.equals("svenska") || selectedLanguage.equals("s")) {
-                System.out.println("Svenska valt.");
-                language = "svenska";
-            } else if (selectedLanguage.equals("engelska") || selectedLanguage.equals("e")) {
-                language = "engelska";
-            } else {
-                System.out.println("Invalid language selection. Default language set to English.");
-                language = "English";
+            switch (selectedLanguage) {
+                case "svenska", "s" -> {
+                    System.out.println("Svenska valt.");
+                    language = "svenska"; // Antag att 'language' är en klassvariabel som definierar språket.
+                }
+                case "engelska", "e" -> {
+                    System.out.println("Engelska valt.");
+                    language = "engelska";
+                }
+                default -> {
+                    System.out.println("Invalid language selection. Default language set to English.");
+                    language = "English";
+                }
             }
         } catch (NoSuchElementException e) {
             throw new NoSuchElementException(e);

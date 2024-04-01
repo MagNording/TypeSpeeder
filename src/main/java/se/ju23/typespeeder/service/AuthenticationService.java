@@ -20,7 +20,7 @@ public class AuthenticationService {
     public AuthenticationService(Menu menu, PlayerService playerService, PlayerRepo playerRepo, UserInputService userInputService) {
         this.menu = menu;
         this.playerService = playerService;
-        this.playerRepo = playerRepo; // Injecting PlayerRepo
+        this.playerRepo = playerRepo;
         this.userInputService = userInputService;
     }
 
@@ -30,7 +30,7 @@ public class AuthenticationService {
             System.out.println("Enter your username: ");
             String userNameInput = userInputService.readString();
 
-            System.out.println("Enter corresponding password: ");
+            System.out.println("Enter password: ");
             String passwordInput = userInputService.readString();
 
             Player playerFound = playerRepo.findByUsernameAndPassword(userNameInput, passwordInput);

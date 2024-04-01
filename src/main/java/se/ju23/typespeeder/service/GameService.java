@@ -6,6 +6,7 @@ import se.ju23.typespeeder.logic.IGameLogic;
 
 @Service
 public class GameService {
+
     private final IGameLogic gameLogic;
 
     @Autowired
