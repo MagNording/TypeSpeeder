@@ -13,10 +13,10 @@ public class Menu implements MenuService {
     Scanner input = new Scanner(System.in);
     private String language = "svenska";
 
-    private UserInputService userInputService;
+    private UserInputService inputService;
 
-    public void setUserInputService(UserInputService userInputService) {
-        this.userInputService = userInputService;
+    public void setUserInputService(UserInputService inputService) {
+        this.inputService = inputService;
     }
 
     @Override
@@ -65,7 +65,7 @@ public class Menu implements MenuService {
 
             while (selectedLanguage.isBlank()) {
                 if (input.hasNextLine()) {
-                    selectedLanguage = userInputService.readString().toLowerCase();
+                    selectedLanguage = inputService.readString().toLowerCase();
                 } else {
                     System.out.println("No input detected. Please enter a language choice.");
                 }

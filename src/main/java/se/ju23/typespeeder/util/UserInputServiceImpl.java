@@ -37,12 +37,12 @@ public class UserInputServiceImpl implements UserInputService {
                 String inputLine = readString();
                 intValue = Integer.parseInt(inputLine);
                 if (intValue < 0) {
-                    System.out.println("Värdet måste vara positivt, försök igen.");
+                    System.out.println("Value must be positive, try again.");
                 } else {
                     break;
                 }
             } catch (NumberFormatException e) {
-                System.out.println("Felaktig inmatning, försök igen.");
+                System.out.println("Invalid input, try again.");
             }
         }
         return intValue;
@@ -55,12 +55,13 @@ public class UserInputServiceImpl implements UserInputService {
             String inputLine = readString();
             intValue = Integer.parseInt(inputLine);
             if (intValue < min || intValue > max) {
-                System.out.printf("Värdet måste vara mellan %d och %d, försök igen.\n", min, max);
+                System.out.printf("Value must be between %d and %d, try again.\n", min,
+                        max);
             } else {
                 break;
             }
         } catch (NumberFormatException e) {
-            System.out.println("Felaktig inmatning, försök igen.");
+            System.out.println("Invalid input, try again.");
         }
     }
     return intValue;
@@ -75,12 +76,12 @@ public class UserInputServiceImpl implements UserInputService {
             try {
                 doubleValue = Double.parseDouble(userInput);
                 if (doubleValue < 0) {
-                    System.out.println("Värdet måste vara positivt, försök igen.");
+                    System.out.println("Value must be positive, try again.");
                 } else {
                     return doubleValue;
                 }
             } catch (NumberFormatException nfe) {
-                System.out.println("Felaktig inmatning, försök igen.");
+                System.out.println("Invalid input, try again.");
             }
         }
     }
@@ -94,11 +95,11 @@ public class UserInputServiceImpl implements UserInputService {
                     input.nextLine();
                     break;
                 } else {
-                    System.out.println("Felaktig inmatning, försök igen.");
+                    System.out.println("Invalid input, try again.");
                     input.nextLine();
                 }
             } catch (InputMismatchException e) {
-                System.out.println("Felaktig inmatning, försök igen.");
+                System.out.println("Invalid input, try again.");
                 input.nextLine();
             }
         }

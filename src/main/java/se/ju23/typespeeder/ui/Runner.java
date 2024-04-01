@@ -37,19 +37,12 @@ public class Runner implements CommandLineRunner {
 
             int userChoice = userInputService.readInt();
             switch (userChoice) {
-                case 1:
-                    authenticationService.login();
-                    break;
-                case 2:
-                    createNewPlayer();
-                    break;
-                case 3:
+                case 1 -> authenticationService.login();
+                case 2 -> createNewPlayer();
+                case 3 -> {
                     System.out.println("Thank you, welcome back!");
                     exitProgram = true;
-                    break;
-                default:
-                    System.out.println("Invalid choice. Please enter 1, 2, or 3.");
-                    break;
+                }
             }
         } while (!exitProgram);
     }
