@@ -18,7 +18,7 @@ public class UserInputServiceImpl implements UserInputService {
         // Define a regex pattern to match the allowed characters
         String pattern = "[-a-zA-ZåäöÅÄÖ0-9@._ ]+";
         do {
-            System.out.print("Enter your input: ");
+            System.out.print("");
             stringValue = input.nextLine().trim();
             if (stringValue.isBlank()) {
                 System.out.println("No input made, try again.\n > ");
