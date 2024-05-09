@@ -1,7 +1,10 @@
 package se.ju23.typespeeder.util;
 
+import org.springframework.stereotype.Service;
+
 import java.util.Scanner;
 
+@Service
 public class UserInputServiceImpl implements UserInputService {
     private final Scanner input = new Scanner(System.in);
     private static final String PATTERN = "[-a-zA-ZåäöÅÄÖ0-9@._ ]+";
