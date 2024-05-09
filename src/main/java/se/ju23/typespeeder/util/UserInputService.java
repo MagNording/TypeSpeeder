@@ -4,9 +4,13 @@ public interface UserInputService {
 
     String readString(String prompt);
 
+    String readString();
+
     int readInt(String prompt);
 
     int readInt(String prompt, int min, int max);
+
+    int readInt(int min, int max);
 
     double readDouble(String prompt);
 

@@ -44,6 +44,26 @@ public class UserInputServiceImpl implements UserInputService {
         return userInput;
     }
 
+    @Override
+    public String readString() {
+        String userInput;
+        boolean isUserInputInvalid;
+        do {
+            userInput = input.nextLine();
+            if (!userInput.matches(PATTERN)) {
+                System.out.println(INVALID_FORMAT_ERROR);
+                isUserInputInvalid = true;
+            } else if (userInput.isEmpty()) {
+                System.out.println(BLANK_INPUT_ERROR);
+                isUserInputInvalid = true;
+            } else {
+                isUserInputInvalid = false;
+            }
+        } while (isUserInputInvalid);
+
+        return userInput;
+    }
+
     /**
      * Reads a positive integer value.
      * @param prompt The message to prompt the user with
@@ -81,6 +101,25 @@ public class UserInputServiceImpl implements UserInputService {
         while (true) {
             try {
                 String inputLine = readString(prompt);
+                intValue = Integer.parseInt(inputLine);
+                if (intValue < min || intValue > max) {
+                    System.out.printf(RANGE_ERROR, min, max);
+                } else {
+                    break;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println(INVALID_INPUT_ERROR);
+            }
+        }
+        return intValue;
+    }
+
+    @Override
+    public int readInt(int min, int max) {
+        int intValue;
+        while (true) {
+            try {
+                String inputLine = readString();
                 intValue = Integer.parseInt(inputLine);
                 if (intValue < min || intValue > max) {
                     System.out.printf(RANGE_ERROR, min, max);

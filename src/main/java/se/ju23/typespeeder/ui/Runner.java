@@ -35,7 +35,7 @@ public class Runner implements CommandLineRunner {
                 2 - Create new player
                 3 - Exit Program""");
 
-            int userChoice = userInputService.readInt();
+            int userChoice = userInputService.readInt(1, 3);
             switch (userChoice) {
                 case 1 -> authenticationService.login();
                 case 2 -> createNewPlayer();
@@ -48,14 +48,12 @@ public class Runner implements CommandLineRunner {
     }
 
     private void createNewPlayer() {
-        System.out.println("Enter the player name:");
-        String playername = userInputService.readString();
+        String playername = userInputService.readString(
+                "Enter the player name: ");
 
-        System.out.println("Enter username:");
-        String username = userInputService.readString();
+        String username = userInputService.readString("Enter username: ");
 
-        System.out.println("Enter password:");
-        String password = userInputService.readString();
+        String password = userInputService.readString("Enter password: ");
 
         playerService.addNewPlayer(playername, username, password);
         System.out.println("New player created successfully.");
