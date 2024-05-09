@@ -1,11 +1,18 @@
 package se.ju23.typespeeder.util;
 
 public interface UserInputService {
-    String readString();
-    int readInt();
-    int readInt(int min, int max);
-    double readDouble();
-    long readLong();
+
+    String readString(String prompt);
+
+    int readInt(String prompt);
+
+    int readInt(String prompt, int min, int max);
+
+    double readDouble(String prompt);
+
+    long readLong(String prompt);
+
     boolean readJaNej();
+
     boolean readYesNo();
 }
