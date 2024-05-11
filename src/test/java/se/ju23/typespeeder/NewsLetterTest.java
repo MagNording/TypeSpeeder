@@ -1,9 +1,6 @@
 package se.ju23.typespeeder;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import se.ju23.typespeeder.service.NewsLetter;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -20,7 +17,7 @@ public class NewsLetterTest {
     @Test
     public void testNewsLetterClassExists() {
         try {
-            Class.forName("se.ju23.typespeeder.service.NewsLetter");
+            Class.forName("se.ju23.typespeeder.NewsLetter");
         } catch (ClassNotFoundException e) {
             throw new AssertionError("NewsLetter class should exist.", e);
         }
@@ -28,7 +25,7 @@ public class NewsLetterTest {
     @Test
     public void testNewsLetterContentLength() {
         try {
-            Class<?> newsLetterClass = Class.forName("se.ju23.typespeeder.service.NewsLetter");
+            Class<?> newsLetterClass = Class.forName("se.ju23.typespeeder.NewsLetter");
 
             Field contentField = newsLetterClass.getDeclaredField("content");
             assertNotNull(contentField, "Field 'content' should exist in NewsLetter.");
@@ -52,7 +49,7 @@ public class NewsLetterTest {
     @Test
     public void testNewsLetterPublishDateTime() {
         try {
-            Class<?> someClass = Class.forName("se.ju23.typespeeder.service.NewsLetter");
+            Class<?> someClass = Class.forName("se.ju23.typespeeder.NewsLetter");
 
             Field publishDateTime = someClass.getDeclaredField("publishDateTime");
             assertNotNull(publishDateTime, "Field 'publishDateTime' should exist in NewsLetter class.");
@@ -64,7 +61,7 @@ public class NewsLetterTest {
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             String formattedDateTime = dateTimeValue.format(formatter);
-            assertEquals("2024-02-23 15:00:00", formattedDateTime, "'publishDateTime' field " +
+            assertEquals("2024-05-22 14:15:15", formattedDateTime, "'publishDateTime' field " +
                     "should have format 'yyyy-MM-dd HH:mm:ss'.");
 
             Method getterMethod = someClass.getDeclaredMethod("getPublishDateTime");

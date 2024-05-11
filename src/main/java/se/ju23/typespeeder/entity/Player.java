@@ -15,10 +15,6 @@ public class Player {
     private String username;
     private String password;
 
-    @Column(name = "role")
-    @Enumerated(EnumType.STRING)
-    private Role role;
-
     private String playername;
 
     @OneToMany(mappedBy = "player", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -26,11 +22,10 @@ public class Player {
 
     public Player() {}
 
-    public Player(String username, String password, Role role, String playername) {
+    public Player(String username, String password, String playername) {
         this.username = username;
         this.password = password;
         this.playername = playername;
-        this.role = role;
     }
 
     public int getId() {
@@ -51,14 +46,6 @@ public class Player {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
     }
 
     public String getPlayername() {
@@ -82,8 +69,7 @@ public class Player {
         return "\n\033[1mPlayerid:\033[0m " + id + " | " +
                 "\033[1mUsername:\033[0m " + username + " | " +
                 "\033[1mPassword:\033[0m " + password + " | " +
-                "\033[1mGamertag: \033[0m " + playername + " | " +
-                "\033[1mRole:\033[0m " + role;
+                "\033[1mGamertag: \033[0m " + playername + " | ";
     }
 }
 

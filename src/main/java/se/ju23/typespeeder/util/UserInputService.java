@@ -1,22 +1,34 @@
 package se.ju23.typespeeder.util;
 
-public interface UserInputService {
+import org.springframework.stereotype.Service;
 
-    String readString(String prompt);
+import java.util.Scanner;
 
-    String readString();
+@Service
+public class UserInputService {
+    private static final Scanner input = new Scanner(System.in);
 
-    int readInt(String prompt);
+    public String nextLine() {
+        return input.nextLine();
+    }
 
-    int readInt(String prompt, int min, int max);
+    public int getIntInput() {
+        String line = input.nextLine();
+        try {
+            return Integer.parseInt(line);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input. Please enter a valid integer.");
+            return getIntInput();
+        }
+    }
 
-    int readInt(int min, int max);
+    public boolean hasNextInt() {
+        return input.hasNextInt();
+    }
 
-    double readDouble(String prompt);
-
-    long readLong(String prompt);
-
-    boolean readJaNej();
-
-    boolean readYesNo();
+    public void consumeNextLine() {
+        if (input.hasNextLine()) {
+            input.nextLine();
+        }
+    }
 }

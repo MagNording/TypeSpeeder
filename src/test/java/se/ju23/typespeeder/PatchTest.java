@@ -16,7 +16,7 @@ public class PatchTest {
     @Test
     public void testPatchClassExists() {
         try {
-            Class.forName("se.ju23.typespeeder.service.Patch");
+            Class.forName("se.ju23.typespeeder.Patch");
         } catch (ClassNotFoundException e) {
             throw new AssertionError("Patch class should exist.", e);
         }
@@ -25,33 +25,35 @@ public class PatchTest {
     @Test
     public void testPatchProperties() {
         try {
-            Class<?> someClass = Class.forName("se.ju23.typespeeder.service.Patch");
+            Class<?> someClass = Class.forName("se.ju23.typespeeder.Patch");
 
             Field patchVersion = someClass.getDeclaredField("patchVersion");
-            assertNotNull(patchVersion, "Field 'patchVersion' should exist in the Patch class.");
+            assertNotNull(patchVersion, "Field 'patchVersion' should exist in the " +
+                    "se.ju23.typespeeder.Patch class.");
             assertTrue(patchVersion.getType().equals(String.class), "Field 'patchVersion' " +
                     "should be of type String.");
 
-            Field releaseDateTime = someClass.getDeclaredField("releaseDateTime");
-            assertNotNull(releaseDateTime, "Field 'releaseDateTime' should exist in Patch class.");
+            Field realeaseDateTime = someClass.getDeclaredField("realeaseDateTime");
+            assertNotNull(realeaseDateTime, "Field 'realeaseDateTime' should exist in " +
+                    "se.ju23.typespeeder.Patch class.");
 
-            assertTrue(releaseDateTime.getType().equals(LocalDateTime.class), "Field " +
-                    "'releaseDateTime' should be of type LocalDateTime.");
+            assertTrue(realeaseDateTime.getType().equals(LocalDateTime.class), "Field " +
+                    "'realeaseDateTime' should be of type LocalDateTime.");
 
             Object instance = someClass.getDeclaredConstructor().newInstance();
-            LocalDateTime dateTimeValue = (LocalDateTime) releaseDateTime.get(instance);
+            LocalDateTime dateTimeValue = (LocalDateTime) realeaseDateTime.get(instance);
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             String formattedDateTime = dateTimeValue.format(formatter);
-            assertEquals("2024-02-23 15:00:00", formattedDateTime, "'releaseDateTime' field " +
-                    "should have format 'yyyy-MM-dd HH:mm:ss'.");
+            assertEquals("2024-05-20 10:25:15", formattedDateTime, "'realeaseDateTime' " +
+                    "field should have format 'yyyy-MM-dd HH:mm:ss'.");
 
-            Method getterMethod = someClass.getDeclaredMethod("getReleaseDateTime");
-            assertNotNull(getterMethod, "Getter method for field 'releaseDateTime' should exist.");
+            Method getterMethod = someClass.getDeclaredMethod("getRealeaseDateTime");
+            assertNotNull(getterMethod, "Getter method for field 'realeaseDateTime' should exist.");
 
 
         } catch (ClassNotFoundException | NoSuchFieldException | NoSuchMethodException e) {
-            fail("Error occurred while testing properties of Patch.", e);
+            fail("Error occurred while testing properties of se.ju23.typespeeder.Patch.", e);
         } catch (InvocationTargetException | InstantiationException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }

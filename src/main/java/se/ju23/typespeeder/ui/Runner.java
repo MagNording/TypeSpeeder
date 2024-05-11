@@ -2,6 +2,7 @@ package se.ju23.typespeeder.ui;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
 import org.springframework.stereotype.Component;
 import se.ju23.typespeeder.service.AuthenticationService;
 import se.ju23.typespeeder.service.PlayerService;
@@ -12,15 +13,13 @@ public class Runner implements CommandLineRunner {
 
     private final AuthenticationService authenticationService;
     private final PlayerService playerService;
-    private final Menu menu;
     private final UserInputService userInputService;
 
     @Autowired
     public Runner(AuthenticationService authenticationService, PlayerService playerService,
-                  Menu menu, UserInputService userInputService) {
+                  UserInputService userInputService) {
         this.authenticationService = authenticationService;
         this.playerService = playerService;
-        this.menu = menu;
         this.userInputService = userInputService;
     }
 
@@ -35,7 +34,7 @@ public class Runner implements CommandLineRunner {
                 2 - Create new player
                 3 - Exit Program""");
 
-            int userChoice = userInputService.readInt(1, 3);
+            int userChoice = userInputService.getIntInput();
             switch (userChoice) {
                 case 1 -> authenticationService.login();
                 case 2 -> createNewPlayer();
@@ -47,13 +46,15 @@ public class Runner implements CommandLineRunner {
         } while (!exitProgram);
     }
 
-    private void createNewPlayer() {
-        String playername = userInputService.readString(
-                "Enter the player name: ");
+    public void createNewPlayer() {
+        System.out.println("Enter player name: ");
+        String playername = userInputService.nextLine();
 
-        String username = userInputService.readString("Enter username: ");
+        System.out.println("Enter username: ");
+        String username = userInputService.nextLine();
 
-        String password = userInputService.readString("Enter password: ");
+        System.out.println("Enter password: ");
+        String password = userInputService.nextLine();
 
         playerService.addNewPlayer(playername, username, password);
         System.out.println("New player created successfully.");

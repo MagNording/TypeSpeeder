@@ -2,13 +2,14 @@ package se.ju23.typespeeder;
 
 import org.junit.jupiter.api.Test;
 import se.ju23.typespeeder.ui.Menu;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+
 
 public class MenuPerformanceTest {
 
@@ -19,7 +20,7 @@ public class MenuPerformanceTest {
     @Test
     public void testGetMenuOptionsExecutionTime() {
         long startTime = System.nanoTime();
-        Menu menu = new Menu();
+        Menu menu = new Menu(mock());
         menu.getMenuOptions();
         long endTime = System.nanoTime();
 
@@ -39,7 +40,7 @@ public class MenuPerformanceTest {
 
         long startTime = System.nanoTime();
 
-        Menu menu = new Menu();
+        Menu menu = new Menu(mock());
         menu.displayMenu();
 
         long endTime = System.nanoTime();
