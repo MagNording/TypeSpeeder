@@ -30,23 +30,31 @@ public class Challenge {
         int choice = 0;
 
         do {
-            challangeMenu.displayMenu();
+            if (menu.getLanguage().equals("svenska")) {
+                System.out.println("""
+                    1. Starta nytt spel
+                    2. Starta nytt enskilda bokstäver-spel
+                    3. Åter till meny
+                    """);
+            } else {
+                System.out.println("""
+                    1. Start new game
+                    2. Start single character game
+                    3. Back to main menu
+                    """);
+            }
             choice = userInputService.getIntInput();
 
-            switch (choice) {
-                case 1 -> {
-                    startGame(player);
-                }
-                case 2 -> {
-//                    startStandardGameInEnglish(player);
-                }
-                case 3 -> {
-//                    startSpecialCharacterGame(player);
-                }
-                case 4 -> {
-//                    startHighlightedCharacterGame(player);
-                }
+            if (choice == 3){
+                break;
             }
+
+            if (choice == 1){
+                startGame(player);
+            }else {
+                startCharacterGame(player);
+            }
+
         } while (choice != 0);
     }
 
@@ -69,6 +77,28 @@ public class Challenge {
             System.out.println("""
                     A number of words will be displayed on the screen. Type the words, and when you're finished typing, press Enter.
                     Press Enter when ready to start or press '0' and Enter to exit!
+
+                    """);
+        }
+    }
+
+    public void getSpecialCharGameInstructions() {
+        if (menu.getLanguage().equals("svenska")) {
+            System.out.println("""
+                    Ett antal tecken kommer visas på skärmen,
+                    Skriv in de tecken som visas med mellanrum där det visas.
+                    När du skrivit klart. Tryck Enter
+                                        
+                    Tryck på Enter när du är redo att starta!
+
+                    """);
+        } else {
+            System.out.println("""
+                    A number of characters will be displayed.
+                    Type the Special characters with space where you can see a space.
+                    when you're finished typing, press Enter.
+                                        
+                    Press Enter when ready to start!
 
                     """);
         }
@@ -124,6 +154,59 @@ public class Challenge {
             }else {
                 accuracy = calcAccuracyForCaseSensitive(targetWords, playerWords);
             }
+
+            int accuracyPercentage = accuracy[0];
+            int misstakesCount = accuracy[1];
+            int correctCount = accuracy[2];
+
+            String formattedAccuracy = String.format("%d", accuracyPercentage);
+
+            if (menu.getLanguage().equals("svenska")) {
+                System.out.println("Det tog " + elapsedTimeInSeconds + "Sekunder att skriva klart!\n" +
+                        "du hade en precision på " + formattedAccuracy + "%");
+                System.out.println("du hade " + misstakesCount + " fel");
+            } else {
+                System.out.println("It took " + elapsedTimeInSeconds + "seconds to finish!\n" +
+                        "with a precision of " + formattedAccuracy + "%");
+                System.out.println("You made " + misstakesCount + " misstakes");
+            }
+
+            result.setTimeResult(elapsedTimeInSeconds);
+            result.setAmountResult(accuracyPercentage);
+            result.setResult(calcTotalPoints(accuracyPercentage,elapsedTimeInSeconds));
+            result.setUser(loggedInPlayer);
+
+            resultRepo.save(result);
+
+        } while (!wait.equals("0"));
+    }
+
+    public void startCharacterGame(Player loggedInPlayer) {
+        String wait;
+
+        do {
+
+            Result result = new Result();
+
+            getSpecialCharGameInstructions();
+
+            wait = userInputService.nextLine(); // väntar in att användarn läst instruktioner, bekräftar innan spelet startas
+
+            if (wait.equals("0")) {
+                break;
+            }
+
+            String targetWords = lettersToType(WordsToType.randomizeWords(WordsToType.characters));
+            System.out.println(targetWords);
+
+            double startTime = System.currentTimeMillis();
+
+            String playerWords = userInputService.nextLine();
+
+            double endTime = System.currentTimeMillis();
+            double elapsedTimeInSeconds = (endTime - startTime) / 1000;
+
+            int[] accuracy = calcAccuracy(targetWords,playerWords);
 
             int accuracyPercentage = accuracy[0];
             int misstakesCount = accuracy[1];

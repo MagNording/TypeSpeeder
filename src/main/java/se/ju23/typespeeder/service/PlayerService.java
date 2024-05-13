@@ -19,7 +19,10 @@ public class PlayerService {
         player.setPlayername(playername);
         player.setUsername(username);
         player.setPassword(password);
-
+        player.setLevel(1);
+        player.setXP(1);
         playerRepo.save(player);
     }
+
+    //all CRUD för användare
 }

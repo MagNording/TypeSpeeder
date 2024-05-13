@@ -43,21 +43,19 @@ public class ChallangeMenu implements MenuService {
     @Override
     public List<String> getMenuOptions() {
         List<String> options = new ArrayList<>();
-        options.add("1. Starta nytt standard spel");
-        options.add("3. Enskilda tecken");
-        options.add("4. Mina resultat");
-        options.add("5. Resultatlista");
-        options.add("6. Åter till huvudmeny");
+        options.add("1. Starta nytt spel");
+        options.add("3. Mina resultat");
+        options.add("4. Resultatlista");
+        options.add("5. Åter till huvudmeny");
         return options;
     }
 
     public List<String> getMenuOptionsEnglish() {
         List<String> options = new ArrayList<>();
         options.add("1. Start new standard game");
-        options.add("3. Start single characters game");
-        options.add("4. My results");
-        options.add("5. Leaderboard");
-        options.add("6. Back to main menu");
+        options.add("3. My results");
+        options.add("4. Leaderboard");
+        options.add("5. Back to main menu");
         return options;
     }
 

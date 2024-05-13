@@ -37,7 +37,7 @@ public class HandleMenuOptions {
             Player player = authenticationService.getPlayer();
 
             switch (option) {
-                case 1 -> challenge.startChallenge(player);
+                case 1 -> challangeMenu(player);
                 case 2 -> {
                     System.out.println("Avsluta spel...");
                     return false;
@@ -45,7 +45,8 @@ public class HandleMenuOptions {
                 case 3 -> editUserMenu();
                 case 4 -> System.out.println("Mina resultat...");
                 case 5 -> System.out.println("Resultatlista...");
-                case 6 -> {
+                case 6 -> System.out.println("newsletter...");
+                case 7 -> {
                     String language = menu.getLanguage();
                     if (language.equals("svenska")) {
                         System.out.println("Switching to English...");
@@ -65,7 +66,7 @@ public class HandleMenuOptions {
         } while (option != 2);
     }
 
-    public boolean challangeMenu() {
+    public void challangeMenu(Player player) {
         int option = 0;
         do {
 
@@ -74,17 +75,17 @@ public class HandleMenuOptions {
             option = userInputService.getIntInput();
 
             switch (option) {
-                case 1 -> System.out.println("standardspel");
+                case 1 -> challenge.startChallenge(player);
                 case 2 -> System.out.println("asdasdsdsdsd...");
                 case 3 -> System.out.println("asdcken...");
                 case 4 -> System.out.println("Misdesultat...");
-                case 5 -> System.out.println("Resdtlista...");
+                case 5 -> {return;}
                 default -> {
                     System.out.println("Invalid option. Please try again.");
-                    return true;
+                    return;
                 }
             }
-            return true;
+            return;
         } while (true);
     }
 
