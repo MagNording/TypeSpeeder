@@ -1,6 +1,8 @@
 package se.ju23.typespeeder.ui;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import se.ju23.typespeeder.entity.Player;
 import se.ju23.typespeeder.util.UserInputService;
 
 import java.util.ArrayList;
@@ -8,14 +10,21 @@ import java.util.List;
 
 @Component
 public class Menu implements MenuService {
-    private final UserInputService inputService;
+
+    @Autowired
+    UserInputService userInputService;
+
     private String language;
 
-    public Menu(UserInputService inputService) {
-        this.inputService = inputService;
-        language = "svenska";
+    public String getLanguage() {
+        return language;
     }
 
+//    public Menu(UserInputService inputService, ChallangeMenu challangeMenu) {
+//        this.inputService = inputService;
+//        this.challangeMenu = challangeMenu;
+//        language = "svenska";
+//    }
 
     @Override
     public List<String> getMenuOptions() {
@@ -29,31 +38,6 @@ public class Menu implements MenuService {
         return options;
     }
 
-    public boolean handleMenuOption(int option) {
-        switch (option) {
-            case 1 -> System.out.println("Spela spel...");
-            case 2 -> {
-                System.out.println("Avsluta spel...");
-                return false;}
-            case 3 -> System.out.println("Uppdatera dina uppgifter...");
-            case 4 -> System.out.println("Mina resultat...");
-            case 5 -> System.out.println("Resultatlista...");
-            case 6 -> {
-                if (language.equals("svenska")) {
-                    System.out.println("Switching to English...");
-                    language = "engelska";
-                } else {
-                    System.out.println("Byter till svenska...");
-                    language = "svenska";
-                }}
-            default -> {
-                System.out.println("Invalid option. Please try again.");
-                return true; }
-        }
-        return true;
-    }
-
-
     public List<String> getMenuOptionsEnglish() {
         List<String> options = new ArrayList<>();
         options.add("1. Play game");
@@ -65,31 +49,11 @@ public class Menu implements MenuService {
         return options;
     }
 
-    public void displayMenu() {
-        if (language == null) {
-            languageChoice();
-        }
-        boolean continueMenu = true;
-        while (continueMenu) {
-            List<String> menuOptions = language.equalsIgnoreCase("svenska") ? getMenuOptions() : getMenuOptionsEnglish();
-            System.out.println("Menu Options - " + language + ": ");
-            menuOptions.forEach(System.out::println);
-
-            if (!inputService.hasNextInt()) {
-                System.out.println("Invalid option. Please enter a number.");
-                continue;
-            }
-            int choice = inputService.getIntInput();
-            continueMenu = handleMenuOption(choice);
-        }
-    }
-
-
     public void languageChoice() {
         String selectedLanguage = "";
         System.out.println("Välj språk (svenska/engelska):");
         while (!selectedLanguage.equals("svenska") && !selectedLanguage.equals("engelska")) {
-            selectedLanguage = inputService.nextLine().toLowerCase().trim();
+            selectedLanguage = userInputService.nextLine().toLowerCase().trim();
 
             switch (selectedLanguage) {
                 case "svenska", "s":
@@ -104,5 +68,17 @@ public class Menu implements MenuService {
                     System.out.println("Invalid language selection. Please try again.");
             }
         }
+    }
+
+    public void displayMenu() {
+
+        if(language == null){
+            languageChoice();
+        }
+
+        List<String> menuOptions = language.equalsIgnoreCase("svenska") ? getMenuOptions() : getMenuOptionsEnglish();
+        System.out.println("Menu Options - " + language + ": ");
+        menuOptions.forEach(System.out::println);
+
     }
 }

@@ -2,9 +2,11 @@ package se.ju23.typespeeder;
 
 
 import org.junit.jupiter.api.Test;
+import se.ju23.typespeeder.entity.Player;
 import se.ju23.typespeeder.logic.Challenge;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
 
 public class ChallengePerformanceTest {
     private static final int MAX_EXECUTION_TIME = 200;
@@ -13,7 +15,7 @@ public class ChallengePerformanceTest {
     public void testStartChallengePerformance() {
         Challenge challenge = new Challenge();
         long startTime = System.nanoTime();
-        challenge.startChallenge();
+        challenge.startChallenge(mock());
         long endTime = System.nanoTime();
         long duration = (endTime - startTime) / MILLISECONDS_CONVERSION;
         assertTrue(duration <= MAX_EXECUTION_TIME, "Starting a challenge took too long. Execution time: " + duration + " ms.");

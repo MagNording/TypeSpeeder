@@ -35,6 +35,7 @@ public class Runner implements CommandLineRunner {
                 3 - Exit Program""");
 
             int userChoice = userInputService.getIntInput();
+
             switch (userChoice) {
                 case 1 -> authenticationService.login();
                 case 2 -> createNewPlayer();

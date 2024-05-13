@@ -1,6 +1,8 @@
 package se.ju23.typespeeder;
 
 import org.junit.jupiter.api.Test;
+import se.ju23.typespeeder.entity.Player;
+
 import java.lang.reflect.Method;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -27,7 +29,7 @@ public class ChallengeTest {
     public void testStartChallengeMethodExists() {
         try {
             Class<?> challengeClass = Class.forName("se.ju23.typespeeder.logic.Challenge");
-            Method method = challengeClass.getMethod("startChallenge");
+            Method method = challengeClass.getMethod("startChallenge", Player.class);
             assertNotNull(method, "The method 'startChallenge' should exist in the Challenge class.");
         } catch (NoSuchMethodException | ClassNotFoundException e) {
             fail("The method 'startChallenge' could not be found in the Challenge class.");
