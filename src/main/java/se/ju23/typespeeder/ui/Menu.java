@@ -1,8 +1,6 @@
 package se.ju23.typespeeder.ui;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import se.ju23.typespeeder.entity.Player;
 import se.ju23.typespeeder.util.UserInputService;
 
 import java.util.ArrayList;
@@ -77,8 +75,5 @@ public class Menu implements MenuService {
         System.out.println("Menu Options - " + language + ": ");
         menuOptions.forEach(System.out::println);
 
-    }
-
-    public void setUserInputService(UserInputService userInputService) {
     }
 }

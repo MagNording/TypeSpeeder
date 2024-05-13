@@ -11,6 +11,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.List;
 import org.mockito.Mockito;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import se.ju23.typespeeder.entity.Player;
 import se.ju23.typespeeder.ui.Menu;
 import se.ju23.typespeeder.ui.MenuService;
@@ -22,8 +23,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class MenuTest {
 
-    private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+    private final InputStream originalIn = System.in;
     private final PrintStream originalOut = System.out;
+    private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
 
     @BeforeEach
     public void setUpStreams() {
@@ -33,6 +35,8 @@ public class MenuTest {
     @AfterEach
     public void restoreStreams() {
         System.setOut(originalOut);
+        System.setIn(originalIn);
+        outContent.reset();
     }
 
     @Test
@@ -79,7 +83,10 @@ public class MenuTest {
 
     @Test
     public void testDisplayMenuCallsGetMenuOptionsAndReturnsAtLeastFive() {
-        Menu menuMock = Mockito.spy(new Menu(mock()));
+        UserInputService userInputServiceMock = mock(UserInputService.class);
+        when(userInputServiceMock.nextLine()).thenReturn("svenska");
+        Menu menu = new Menu(userInputServiceMock);
+        Menu menuMock = Mockito.spy(menu);
         menuMock.displayMenu();
         verify(menuMock, times(1)).getMenuOptions();
         assertTrue(menuMock.getMenuOptions().size() >= 5, "'getMenuOptions()' should return at least 5 alternatives.");
@@ -94,7 +101,10 @@ public class MenuTest {
 
     @Test
     public void menuShouldPrintAtLeastFiveOptions() {
-        new Menu(mock()).displayMenu();
+        UserInputService userInputServiceMock = mock(UserInputService.class);
+        when(userInputServiceMock.nextLine()).thenReturn("svenska");
+        Menu menu = new Menu(userInputServiceMock);
+        menu.displayMenu();
         long count = outContent.toString().lines().count();
         assertTrue(count >= 5, "The menu should print out at least 5 alternatives.");
     }
@@ -105,8 +115,6 @@ public class MenuTest {
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
 
-        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outContent));
         UserInputService userInputService = new UserInputService();
         Menu menu = new Menu(userInputService);
         menu.displayMenu();
