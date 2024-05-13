@@ -7,6 +7,8 @@ import se.ju23.typespeeder.NewsLetter;
 import se.ju23.typespeeder.entity.Player;
 import se.ju23.typespeeder.logic.Challenge;
 import se.ju23.typespeeder.service.AuthenticationService;
+import se.ju23.typespeeder.service.GameService;
+import se.ju23.typespeeder.service.PlayerService;
 import se.ju23.typespeeder.util.UserInputService;
 
 @Component
@@ -31,6 +33,15 @@ public class HandleMenuOptions {
     @Autowired
     NewsLetter newsLetter;
 
+    @Autowired
+    PlayerService playerService;
+
+    @Autowired
+    GameService gameService;
+
+    @Autowired
+    EditUserMenu editUserMenu;
+
     public boolean mainMenu() {
         int option;
         do {
@@ -46,8 +57,8 @@ public class HandleMenuOptions {
                     System.out.println("Avsluta spel...");
                     return false;
                 }
-                case 3 -> editUserMenu();
-                case 4 -> System.out.println("Resultatlista...");
+                case 3 -> editUserMenu(player);
+                case 4 -> gameService.printTopResults();
                 case 5 -> System.out.println(newsLetter.getContent());
                 case 6 -> {
                     String language = menu.getLanguage();
@@ -81,7 +92,9 @@ public class HandleMenuOptions {
                 case 1 -> challenge.startChallenge(player);
                 case 2 -> System.out.println("Användarens resultat...");
                 case 3 -> System.out.println("global resultatslista..."); // findall på resultsrepo
-                case 4 -> {return;}
+                case 4 -> {
+                    return;
+                }
                 default -> {
                     System.out.println("Invalid option. Please try again.");
                     return;
@@ -91,26 +104,25 @@ public class HandleMenuOptions {
         } while (true);
     }
 
-    public boolean editUserMenu() {
+    public void editUserMenu(Player player) {
         int option = 0;
-        do {
 
-//            editUserMenu().displayMenu();
+        do {
+            editUserMenu.displayMenu();
 
             option = userInputService.getIntInput();
 
             switch (option) {
-                case 1 -> System.out.println("Ändra användarnamn..."); //metoder i playerservice
-                case 2 -> System.out.println("uppdatera lösenord...");//metoder i playerservice
-                case 3 -> System.out.println("ändra playername");//metoder i playerservice
+                case 1 -> playerService.editUserName(player); //metoder i playerservice
+                case 2 -> playerService.editPassword(player);//metoder i playerservice
+                case 3 -> playerService.editUserName(player);//metoder i playerservice
                 default -> {
                     System.out.println("Invalid option. Please try again.");
-                    return true;
+                    return;
                 }
             }
-            return true;
+            return;
         } while (true);
     }
-
 
 }

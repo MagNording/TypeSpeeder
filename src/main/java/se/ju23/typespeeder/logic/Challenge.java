@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import se.ju23.typespeeder.entity.Player;
 import se.ju23.typespeeder.repositories.ResultRepo;
+import se.ju23.typespeeder.service.PlayerService;
 import se.ju23.typespeeder.ui.ChallangeMenu;
 import se.ju23.typespeeder.ui.Menu;
 import se.ju23.typespeeder.util.UserInputService;
@@ -25,6 +26,9 @@ public class Challenge {
 
     @Autowired
     ResultRepo resultRepo;
+
+    @Autowired
+    PlayerService playerService;
 
     public void startChallenge(Player player) {
         int choice = 0;
@@ -172,12 +176,16 @@ public class Challenge {
                 System.out.println("You made " + misstakesCount + " misstakes");
             }
 
+            int points = calcTotalPoints(accuracyPercentage,elapsedTimeInSeconds);
+
             result.setTimeResult(elapsedTimeInSeconds);
             result.setAmountResult(accuracyPercentage);
-            result.setResult(calcTotalPoints(accuracyPercentage,elapsedTimeInSeconds));
+            result.setResult(points);
             result.setUser(loggedInPlayer);
 
             resultRepo.save(result);
+
+            playerService.updateXPandLevel(loggedInPlayer,points);
 
         } while (!wait.equals("0"));
     }
@@ -226,12 +234,16 @@ public class Challenge {
                 System.out.println("You made " + misstakesCount + " misstakes");
             }
 
+            int points = calcTotalPoints(accuracyPercentage,elapsedTimeInSeconds);
+
             result.setTimeResult(elapsedTimeInSeconds);
             result.setAmountResult(accuracyPercentage);
-            result.setResult(calcTotalPoints(accuracyPercentage,elapsedTimeInSeconds));
+            result.setResult(points);
             result.setUser(loggedInPlayer);
 
             resultRepo.save(result);
+
+            playerService.updateXPandLevel(loggedInPlayer,points);
 
         } while (!wait.equals("0"));
     }
