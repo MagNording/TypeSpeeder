@@ -10,6 +10,8 @@ public class Result {
     private int id;
 
     private int result;
+    private double timeResult; //hur lång tid ett game tar
+    private int amountResult; //antal rätt i procent
 
     @ManyToOne
     @JoinColumn(name = "playername", referencedColumnName = "id")
@@ -17,9 +19,27 @@ public class Result {
 
     public Result() {}
 
-    public Result(int result, Player player) {
+    public Result(int result, double timeResult, int amountResult, Player player) {
         this.result = result;
+        this.timeResult = timeResult;
+        this.amountResult = amountResult;
         this.player = player;
+    }
+
+    public double getTimeResult() {
+        return timeResult;
+    }
+
+    public void setTimeResult(double timeResult) {
+        this.timeResult = timeResult;
+    }
+
+    public int getAmountResult() {
+        return amountResult;
+    }
+
+    public void setAmountResult(int amountResult) {
+        this.amountResult = amountResult;
     }
 
     public int getResult() {

@@ -22,7 +22,6 @@ public class Menu implements MenuService {
 
 //    public Menu(UserInputService inputService, ChallangeMenu challangeMenu) {
 //        this.inputService = inputService;
-//        this.challangeMenu = challangeMenu;
 //        language = "svenska";
 //    }
 
