@@ -15,7 +15,7 @@ public class Player {
     private String username;
     private String password;
     private String playername;
-    private int XP;
+    private int XP; // får xp från result
     private int level; //++ för varje 100e XP
 
     @OneToMany(mappedBy = "player", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

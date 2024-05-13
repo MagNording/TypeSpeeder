@@ -3,6 +3,7 @@ package se.ju23.typespeeder.logic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import se.ju23.typespeeder.entity.Player;
+import se.ju23.typespeeder.repositories.ResultRepo;
 import se.ju23.typespeeder.ui.ChallangeMenu;
 import se.ju23.typespeeder.ui.Menu;
 import se.ju23.typespeeder.util.UserInputService;
@@ -21,6 +22,9 @@ public class Challenge {
 
     @Autowired
     Menu menu;
+
+    @Autowired
+    ResultRepo resultRepo;
 
     public void startChallenge(Player player) {
         int choice = 0;
@@ -70,7 +74,7 @@ public class Challenge {
         }
     }
 
-    public void startGame(Player foundPlayer) {
+    public void startGame(Player loggedInPlayer) {
         String wait;
 
         do {
@@ -93,6 +97,7 @@ public class Challenge {
             getStandardGameInstructions();
 
             wait = userInputService.nextLine(); // väntar in att användarn läst instruktioner, bekräftar innan spelet startas
+
             if (wait.equals("0")) {
                 break;
             }
@@ -136,7 +141,34 @@ public class Challenge {
                 System.out.println("You made " + misstakesCount + " misstakes");
             }
 
+            result.setTimeResult(elapsedTimeInSeconds);
+            result.setAmountResult(accuracyPercentage);
+            result.setResult(calcTotalPoints(accuracyPercentage,elapsedTimeInSeconds));
+            result.setUser(loggedInPlayer);
+
+            resultRepo.save(result);
+
         } while (!wait.equals("0"));
+    }
+
+    public int calcTotalPoints(int accuracy, double elapsedTime){
+        int point = 100;
+
+        if (elapsedTime > 20) {
+            double extraTime = elapsedTime - 20;
+            point -= extraTime; // Deduct 1 point for each second over 20 seconds
+        }
+
+        // Deduct points based on accuracy
+        if (accuracy < 100) {
+            int mistakes = 100 - accuracy;
+            point -= mistakes; // Deduct 1 point for each mistake made
+        }
+
+        // Ensure total points are non-negative
+        point = Math.max(point, 0);
+
+        return point;
     }
 
     public int[] calcAccuracy(String targetWords, String playerWords) {

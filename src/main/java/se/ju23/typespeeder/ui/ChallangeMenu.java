@@ -44,7 +44,6 @@ public class ChallangeMenu implements MenuService {
     public List<String> getMenuOptions() {
         List<String> options = new ArrayList<>();
         options.add("1. Starta nytt standard spel");
-        options.add("2. Starta nytt svårt spel");
         options.add("3. Enskilda tecken");
         options.add("4. Mina resultat");
         options.add("5. Resultatlista");
@@ -55,8 +54,7 @@ public class ChallangeMenu implements MenuService {
     public List<String> getMenuOptionsEnglish() {
         List<String> options = new ArrayList<>();
         options.add("1. Start new standard game");
-        options.add("2. Start new hard game");
-        options.add("3. Start separate characters game");
+        options.add("3. Start single characters game");
         options.add("4. My results");
         options.add("5. Leaderboard");
         options.add("6. Back to main menu");

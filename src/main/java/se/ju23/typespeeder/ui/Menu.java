@@ -11,8 +11,7 @@ import java.util.List;
 @Component
 public class Menu implements MenuService {
 
-    @Autowired
-    UserInputService userInputService;
+    private final UserInputService userInputService;
 
     private String language;
 
@@ -20,10 +19,10 @@ public class Menu implements MenuService {
         return language;
     }
 
-//    public Menu(UserInputService inputService, ChallangeMenu challangeMenu) {
-//        this.inputService = inputService;
+    public Menu(UserInputService userInputService) {
+        this.userInputService = userInputService;
 //        language = "svenska";
-//    }
+    }
 
     @Override
     public List<String> getMenuOptions() {
@@ -79,5 +78,8 @@ public class Menu implements MenuService {
         System.out.println("Menu Options - " + language + ": ");
         menuOptions.forEach(System.out::println);
 
+    }
+
+    public void setUserInputService(UserInputService userInputService) {
     }
 }
