@@ -30,7 +30,7 @@ public class PlayerService {
     }
 
     public void editUserName(Player player) {
-        System.out.println("ange nytt namn/state new name: ");
+        System.out.println("Ange nytt namn/Enter new name: ");
         String newName = userInputService.nextLine();
 
         player.setUsername(newName);
@@ -38,7 +38,7 @@ public class PlayerService {
     }
 
     public void editPassword(Player player) {
-        System.out.println("ange nytt lösenord/state new password: ");
+        System.out.println("Ange nytt lösenord/Enter new password: ");
         String newPassword = userInputService.nextLine();
 
         player.setPassword(newPassword);
@@ -46,7 +46,7 @@ public class PlayerService {
     }
 
     public void editPlayerName(Player player) {
-        System.out.println("ange nytt visningsnamn/state new player name: ");
+        System.out.println("Ange nytt visningsnamn/Enter new player name: ");
         String newPlayerName = userInputService.nextLine();
 
         player.setPlayername(newPlayerName);
