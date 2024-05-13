@@ -76,10 +76,9 @@ public class HandleMenuOptions {
 
             switch (option) {
                 case 1 -> challenge.startChallenge(player);
-                case 2 -> System.out.println("asdasdsdsdsd...");
-                case 3 -> System.out.println("asdcken...");
-                case 4 -> System.out.println("Misdesultat...");
-                case 5 -> {return;}
+                case 2 -> System.out.println("Användarens resultat...");
+                case 3 -> System.out.println("global resultatslista..."); // findall på resultsrepo
+                case 4 -> {return;}
                 default -> {
                     System.out.println("Invalid option. Please try again.");
                     return;
