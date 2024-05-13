@@ -3,6 +3,7 @@ package se.ju23.typespeeder.ui;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
+import se.ju23.typespeeder.NewsLetter;
 import se.ju23.typespeeder.entity.Player;
 import se.ju23.typespeeder.logic.Challenge;
 import se.ju23.typespeeder.service.AuthenticationService;
@@ -27,6 +28,9 @@ public class HandleMenuOptions {
     @Lazy
     AuthenticationService authenticationService;
 
+    @Autowired
+    NewsLetter newsLetter;
+
     public boolean mainMenu() {
         int option;
         do {
@@ -43,10 +47,9 @@ public class HandleMenuOptions {
                     return false;
                 }
                 case 3 -> editUserMenu();
-                case 4 -> System.out.println("Mina resultat...");
-                case 5 -> System.out.println("Resultatlista...");
-                case 6 -> System.out.println("newsletter...");
-                case 7 -> {
+                case 4 -> System.out.println("Resultatlista...");
+                case 5 -> System.out.println(newsLetter.getContent());
+                case 6 -> {
                     String language = menu.getLanguage();
                     if (language.equals("svenska")) {
                         System.out.println("Switching to English...");

@@ -104,6 +104,7 @@ public class Challenge {
         }
     }
 
+
     public void startGame(Player loggedInPlayer) {
         String wait;
 
@@ -180,6 +181,7 @@ public class Challenge {
 
         } while (!wait.equals("0"));
     }
+
 
     public void startCharacterGame(Player loggedInPlayer) {
         String wait;

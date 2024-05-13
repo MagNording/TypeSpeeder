@@ -1,7 +1,10 @@
 package se.ju23.typespeeder;
 
+import org.springframework.stereotype.Component;
+
 import java.time.LocalDateTime;
 
+@Component
 public class NewsLetter {
     private String content;
     public LocalDateTime publishDateTime;

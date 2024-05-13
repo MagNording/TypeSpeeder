@@ -21,7 +21,6 @@ public class Menu implements MenuService {
 
     public Menu(UserInputService userInputService) {
         this.userInputService = userInputService;
-//        language = "svenska";
     }
 
     @Override
@@ -30,10 +29,9 @@ public class Menu implements MenuService {
         options.add("1. Spela spel");
         options.add("2. Avsluta spel");
         options.add("3. Uppdatera spelare");
-        options.add("4. Mina resultat");
-        options.add("5. Resultatlista");
-        options.add("6. Nyhetsbrev");
-        options.add("7. Byt till engelska");
+        options.add("4. Resultatlista");
+        options.add("5. Nyhetsbrev");
+        options.add("6. Byt till engelska");
         return options;
     }
 
@@ -42,10 +40,9 @@ public class Menu implements MenuService {
         options.add("1. Play game");
         options.add("2. Finish game");
         options.add("3. Update player");
-        options.add("4. My results");
-        options.add("5. Result list");
-        options.add("6. NewsLetter");
-        options.add("7. Switch to swedish");
+        options.add("4. Result list");
+        options.add("5. NewsLetter");
+        options.add("6. Switch to swedish");
         return options;
     }
 
