@@ -9,16 +9,13 @@ import se.ju23.typespeeder.util.UserInputService;
 
 @Service
 public class PlayerService {
+
     private final PlayerRepo playerRepo;
-
-    private final Menu menu;
-
     private final UserInputService userInputService;
 
     @Autowired
-    public PlayerService(PlayerRepo playerRepo, Menu menu, UserInputService userInputService) {
+    public PlayerService(PlayerRepo playerRepo, UserInputService userInputService) {
         this.playerRepo = playerRepo;
-        this.menu = menu;
         this.userInputService = userInputService;
     }
 
@@ -33,18 +30,18 @@ public class PlayerService {
     }
 
     public void editUserName(Player player) {
-            System.out.println("ange nytt namn/state new name: ");
-            String newName = userInputService.nextLine();
+        System.out.println("ange nytt namn/state new name: ");
+        String newName = userInputService.nextLine();
 
-            player.setUsername(newName);
-            playerRepo.save(player);
+        player.setUsername(newName);
+        playerRepo.save(player);
     }
 
     public void editPassword(Player player) {
         System.out.println("ange nytt lösenord/state new password: ");
         String newPassword = userInputService.nextLine();
 
-        player.setUsername(newPassword);
+        player.setPassword(newPassword);
         playerRepo.save(player);
     }
 
@@ -52,7 +49,7 @@ public class PlayerService {
         System.out.println("ange nytt visningsnamn/state new player name: ");
         String newPlayerName = userInputService.nextLine();
 
-        player.setUsername(newPlayerName);
+        player.setPlayername(newPlayerName);
         playerRepo.save(player);
     }
 

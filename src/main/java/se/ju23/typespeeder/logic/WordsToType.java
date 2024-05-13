@@ -19,7 +19,8 @@ public class WordsToType {
             "Population", "Explanation", "Authority", "Witness", "Emotional", "Prerequisite", "Department",
             "Connection", "Interrupter", "Equivalent", "Insurance", "Difficulties", "Workplace",
             "Traffic light", "Composition", "Agreement", "Official", "Restore", "Patisserie", "Immigration",
-            "Renewable", "Packaging", "Pollutants", "Populated", "Progress", "Recycling", "Shutdown",
+            "Renewable", "Packaging", "Pollution", "Populated", "Progress", "Recycling",
+            "Shutdown",
             "Complicated", "Quality control", "User-friendly"
     };
 
@@ -31,15 +32,9 @@ public class WordsToType {
     };
 
     public static List<String> randomizeWords(String[] words) {
-        List<String> randomWords = new ArrayList<>();
-        Random random = new Random();
         List<String> tempWords = new ArrayList<>(List.of(words));
         Collections.shuffle(tempWords);
 
-        for (int i = 0; i < 7; i++) {
-            String word = tempWords.get(i);
-            randomWords.add(word);
-        }
-        return randomWords;
+        return tempWords.subList(0, 7);
     }
 }

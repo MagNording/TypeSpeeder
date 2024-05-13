@@ -2,14 +2,13 @@ package se.ju23.typespeeder.ui;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import se.ju23.typespeeder.entity.Player;
 import se.ju23.typespeeder.util.UserInputService;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class ChallangeMenu implements MenuService {
+public class ChallengeMenu implements MenuService {
 
     @Autowired
     Menu menu;
@@ -17,6 +16,7 @@ public class ChallangeMenu implements MenuService {
     @Autowired
     UserInputService inputService;
 
+    // Constructor Injection no?
 //    public ChallangeMenu(Menu menu, UserInputService inputService) {
 //        this.menu = menu;
 //        this.inputService = inputService;
@@ -52,7 +52,7 @@ public class ChallangeMenu implements MenuService {
 
     public List<String> getMenuOptionsEnglish() {
         List<String> options = new ArrayList<>();
-        options.add("1. Start new standard game");
+        options.add("1. Start new game");
         options.add("2. My results");
         options.add("3. Leaderboard");
         options.add("4. Back to main menu");

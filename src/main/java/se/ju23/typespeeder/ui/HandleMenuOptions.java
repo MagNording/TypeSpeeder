@@ -18,7 +18,7 @@ public class HandleMenuOptions {
     Menu menu;
 
     @Autowired
-    ChallangeMenu challangeMenu;
+    ChallengeMenu challengeMenu;
 
     @Autowired
     UserInputService userInputService;
@@ -27,7 +27,7 @@ public class HandleMenuOptions {
     Challenge challenge;
 
     @Autowired
-    @Lazy
+    @Lazy // Lazy loading för att undvika cirkulärt beroende
     AuthenticationService authenticationService;
 
     @Autowired
@@ -52,7 +52,7 @@ public class HandleMenuOptions {
             Player player = authenticationService.getPlayer();
 
             switch (option) {
-                case 1 -> challangeMenu(player);
+                case 1 -> challengeMenu(player);
                 case 2 -> {
                     System.out.println("Avsluta spel...");
                     return false;
@@ -80,18 +80,15 @@ public class HandleMenuOptions {
         } while (option != 2);
     }
 
-    public void challangeMenu(Player player) {
+    public void challengeMenu(Player player) {
         int option = 0;
         do {
-
-            challangeMenu.displayMenu();
-
+            challengeMenu.displayMenu();
             option = userInputService.getIntInput();
-
             switch (option) {
                 case 1 -> challenge.startChallenge(player);
                 case 2 -> System.out.println("Användarens resultat...");
-                case 3 -> System.out.println("global resultatslista..."); // findall på resultsrepo
+                case 3 -> System.out.println("Global resultatslista..."); // findall på resultat
                 case 4 -> {
                     return;
                 }
@@ -109,13 +106,11 @@ public class HandleMenuOptions {
 
         do {
             editUserMenu.displayMenu();
-
             option = userInputService.getIntInput();
-
             switch (option) {
-                case 1 -> playerService.editUserName(player); //metoder i playerservice
-                case 2 -> playerService.editPassword(player);//metoder i playerservice
-                case 3 -> playerService.editUserName(player);//metoder i playerservice
+                case 1 -> playerService.editUserName(player);
+                case 2 -> playerService.editPassword(player);
+                case 3 -> playerService.editPlayerName(player);
                 default -> {
                     System.out.println("Invalid option. Please try again.");
                     return;

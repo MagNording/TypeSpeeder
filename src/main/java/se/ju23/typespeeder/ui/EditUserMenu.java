@@ -1,8 +1,6 @@
 package se.ju23.typespeeder.ui;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import se.ju23.typespeeder.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,8 +8,11 @@ import java.util.List;
 @Component
 public class EditUserMenu implements MenuService{
 
-    @Autowired
-    Menu menu;
+    private final Menu menu;
+
+    public EditUserMenu(Menu menu) {
+        this.menu = menu;
+    }
 
     @Override
     public void displayMenu() {
@@ -39,7 +40,6 @@ public class EditUserMenu implements MenuService{
         options.add("4. Åter till huvudmeny");
         return options;
     }
-
 
     public List<String> getMenuOptionsEnglish() {
         List<String> options = new ArrayList<>();

@@ -4,8 +4,6 @@ import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.ju23.typespeeder.entity.Result;
-import se.ju23.typespeeder.logic.IGameLogic;
-import se.ju23.typespeeder.repositories.ResultRepo;
 import se.ju23.typespeeder.ui.Menu;
 
 import java.util.List;
@@ -13,16 +11,11 @@ import java.util.List;
 @Service
 public class GameService {
 
-    private final IGameLogic gameLogic;
-
     private final EntityManager entityManager;
-
     private final Menu menu;
 
     @Autowired
-    public GameService(IGameLogic gameLogic, EntityManager entityManager, Menu menu) {
-        this.gameLogic = gameLogic;
-
+    public GameService(EntityManager entityManager, Menu menu) {
         this.entityManager = entityManager;
         this.menu = menu;
     }
