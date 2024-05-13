@@ -24,7 +24,7 @@ public class ChallengePerformanceTest {
     public void testLettersToTypePerformance() {
         Challenge challenge = new Challenge();
         long startTime = System.nanoTime();
-        challenge.lettersToType();
+        challenge.lettersToType(mock());
         long endTime = System.nanoTime();
         long duration = (endTime - startTime) / MILLISECONDS_CONVERSION;
         assertTrue(duration <= MAX_EXECUTION_TIME, "Selecting letters to type took too long. Execution time: " + duration + " ms.");
