@@ -42,7 +42,7 @@ public class HandleMenuOptions {
     @Autowired
     EditUserMenu editUserMenu;
 
-    public boolean mainMenu() {
+    public void mainMenu() {
         int option;
         do {
             menu.displayMenu();
@@ -55,7 +55,7 @@ public class HandleMenuOptions {
                 case 1 -> challengeMenu(player);
                 case 2 -> {
                     System.out.println("Avsluta spel...");
-                    return false;
+                    break;
                 }
                 case 3 -> editUserMenu(player);
                 case 4 -> gameService.printTopResults();
@@ -72,11 +72,9 @@ public class HandleMenuOptions {
                 }
                 default -> {
                     System.out.println("Invalid option. Please try again.");
-                    return true;
+                    break;
                 }
             }
-            return true;
-
         } while (option != 2);
     }
 
@@ -88,17 +86,15 @@ public class HandleMenuOptions {
             switch (option) {
                 case 1 -> challenge.startChallenge(player);
                 case 2 -> System.out.println("Användarens resultat...");
+                //case 2 kan tas bort om du inte vill göra en metod i playerservice som heter viewLoggedInPlayersStat
+                // men som vi snackade om så får man ju faktiskt info om sitt resultat efter varje spelad runda!
                 case 3 -> gameService.printTopResults(); // findall på resultat
-                case 4 -> {
-                    return;
-                }
                 default -> {
                     System.out.println("Invalid option. Please try again.");
-                    return;
+                    break;
                 }
             }
-            return;
-        } while (true);
+        } while (option != 4);
     }
 
     public void editUserMenu(Player player) {
@@ -113,11 +109,11 @@ public class HandleMenuOptions {
                 case 3 -> playerService.editPlayerName(player);
                 default -> {
                     System.out.println("Invalid option. Please try again.");
-                    return;
+                    break;
                 }
             }
-            return;
-        } while (true);
+
+        } while (option != 4);
     }
 
 }
