@@ -88,7 +88,7 @@ public class HandleMenuOptions {
             switch (option) {
                 case 1 -> challenge.startChallenge(player);
                 case 2 -> System.out.println("Användarens resultat...");
-                case 3 -> System.out.println("Global resultatslista..."); // findall på resultat
+                case 3 -> gameService.printTopResults(); // findall på resultat
                 case 4 -> {
                     return;
                 }

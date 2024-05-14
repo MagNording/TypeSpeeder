@@ -67,10 +67,10 @@ public class Result {
         return "Result{" +
                 "id=" + id +
                 ", result=" + result +
-                ", user=" + player +
+                ", timeResult=" + timeResult +
+                ", amountResult=" + amountResult +
+                ", player=" + player +
                 '}';
     }
-
-
 }
 

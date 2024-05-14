@@ -17,7 +17,7 @@ public class ChallengeMenu implements MenuService {
     UserInputService inputService;
 
     // Constructor Injection no?
-//    public ChallangeMenu(Menu menu, UserInputService inputService) {
+//    public ChallengeMenu(Menu menu, UserInputService inputService) {
 //        this.menu = menu;
 //        this.inputService = inputService;
 //    }

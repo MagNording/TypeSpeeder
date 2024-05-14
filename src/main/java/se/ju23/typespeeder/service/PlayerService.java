@@ -32,7 +32,6 @@ public class PlayerService {
     public void editUserName(Player player) {
         System.out.println("Ange nytt namn/Enter new name: ");
         String newName = userInputService.nextLine();
-
         player.setUsername(newName);
         playerRepo.save(player);
     }
@@ -40,7 +39,6 @@ public class PlayerService {
     public void editPassword(Player player) {
         System.out.println("Ange nytt lösenord/Enter new password: ");
         String newPassword = userInputService.nextLine();
-
         player.setPassword(newPassword);
         playerRepo.save(player);
     }
@@ -48,7 +46,6 @@ public class PlayerService {
     public void editPlayerName(Player player) {
         System.out.println("Ange nytt visningsnamn/Enter new player name: ");
         String newPlayerName = userInputService.nextLine();
-
         player.setPlayername(newPlayerName);
         playerRepo.save(player);
     }
