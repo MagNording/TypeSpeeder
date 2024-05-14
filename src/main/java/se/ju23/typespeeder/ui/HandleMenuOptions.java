@@ -65,9 +65,11 @@ public class HandleMenuOptions {
                     if (language.equals("svenska")) {
                         System.out.println("Switching to English...");
                         menu.setLanguage("engelska");
+
                     } else {
                         System.out.println("Byter till svenska...");
                         menu.setLanguage("svenska");
+
                     }
                 }
                 default -> {

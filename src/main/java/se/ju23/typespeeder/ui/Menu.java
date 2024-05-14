@@ -17,6 +17,7 @@ public class Menu implements MenuService {
         this.language = language;
     }
 
+
     public String getLanguage() {
         return language;
     }
