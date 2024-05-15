@@ -209,7 +209,7 @@ public class Challenge {
 
         if (elapsedTime > 20) {
             double extraTime = elapsedTime - 20;
-            points -= extraTime; // Deduct 1 point for each second over 20 seconds
+            points -= (int) extraTime; // Deduct 1 point for each second over 20 seconds
         }
         if (accuracy < 100) {
             int mistakes = 100 - accuracy;
@@ -266,7 +266,7 @@ public class Challenge {
         return new int[]{accuracy, mistakeCount, correctCount};
     }
 
-    // Method to remove ANSI color codes from a string
+    // Metod för att ta bort ANSI-koder från en sträng
     public static String removeAnsiCodes(String input) {
         return input.replaceAll("\u001B\\[[;\\d]*m", "");
     }
