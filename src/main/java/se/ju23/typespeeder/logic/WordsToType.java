@@ -6,6 +6,9 @@ import java.util.List;
 
 public class WordsToType {
 
+    private static final String CYAN = "\u001B[36m";
+    private static final String RESET = "\u001B[0m";
+
     public static final String[] words={
             "Befolkning", "Förklaring", "Myndighet", "Bevittna", "Känslomässig", "Förutsättning",
             "Avdelning", "Förbindelse", "Avbrytare", "Motsvarighet", "Försäkring", "Svårigheter",
@@ -33,7 +36,15 @@ public class WordsToType {
     public static List<String> randomizeWords(String[] words) {
         List<String> tempWords = new ArrayList<>(List.of(words));
         Collections.shuffle(tempWords);
+        List<String> coloredWords = new ArrayList<>();
 
-        return tempWords.subList(0, 7);
+        for (String word : tempWords.subList(0, 7)) {
+            coloredWords.add(colorWord(word));
+        }
+        return coloredWords;
+    }
+
+    private static String colorWord(String word) {
+        return CYAN + word + RESET;
     }
 }

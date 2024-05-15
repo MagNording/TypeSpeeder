@@ -36,14 +36,14 @@ public class Challenge {
         do {
             if (menu.getLanguage().equals("svenska")) {
                 System.out.println("""
-                    1. Starta nytt spel
-                    2. Starta nytt enskilda bokstäver-spel
+                    1. Starta ett ord-spel
+                    2. Starta ett bokstavs-spel
                     3. Åter till meny
                     """);
             } else {
                 System.out.println("""
-                    1. Start new game
-                    2. Start single character game
+                    1. Start a words game
+                    2. Start a single character game
                     3. Back to main menu
                     """);
             }
@@ -111,12 +111,12 @@ public class Challenge {
         do {
             if (menu.getLanguage().equals("svenska")) {
                 System.out.println("""
-                        1.Starta normalt spel
-                        2.Starta svårt spel(skriftlägeskänsligt)
+                        1.Starta lätt spel
+                        2.Starta svårt spel(skiftlägeskänsligt)
                         """);
             } else {
                 System.out.println("""
-                        1.Starta normal game
+                        1.Starta easy game
                         2.Start hard game(case sensitive)
                         """);
             }

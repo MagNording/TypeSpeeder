@@ -58,6 +58,4 @@ public class ChallengeMenu implements MenuService {
         options.add("4. Back to main menu");
         return options;
     }
-
-
 }
