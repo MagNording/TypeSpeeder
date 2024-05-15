@@ -15,6 +15,9 @@ import java.util.List;
 @Component
 public class Challenge {
 
+    private static final String CYAN = "\u001B[36m";
+    private static final String RESET = "\u001B[0m";
+
     @Autowired
     ChallengeMenu challengeMenu;
 
@@ -31,271 +34,240 @@ public class Challenge {
     PlayerService playerService;
 
     public void startChallenge(Player player) {
-        int choice = 0;
-
+        int choice;
         do {
-            if (menu.getLanguage().equals("svenska")) {
-                System.out.println("""
-                    1. Starta ett Ordspel
-                    2. Starta ett Bokstavsspel
-                    3. Åter till spelmenyn
-                    """);
-            } else {
-                System.out.println("""
-                    1. Start a words game
-                    2. Start a single character game
-                    3. Back to game menu
-                    """);
-            }
+            displayMainMenu();
             choice = userInputService.getIntInput();
+            switch (choice) {
+                case 1 -> startGame(player);
+                case 2 -> startCharacterGame(player);
+                case 3 -> System.out.println("Returning to main menu...");
+                default -> System.out.println("Invalid option. Please try again.");
+            }
+        } while (choice != 3);
+    }
 
-            if (choice == 3){
-                break;
-            }
-            if (choice == 1){
-                startGame(player);
-            }else {
-                startCharacterGame(player);
-            }
-        } while (choice != 0);
+    private void displayMainMenu() {
+        if (menu.getLanguage().equals("svenska")) {
+            System.out.println("""
+                1. Starta ett Ordspel
+                2. Starta ett Bokstavsspel
+                3. Åter till spelmenyn
+                """);
+        } else {
+            System.out.println("""
+                1. Start a words game
+                2. Start a single character game
+                3. Back to game menu
+                """);
+        }
+    }
+
+    private String colorize(String text, String colorCode, String resetCode) {
+        return colorCode + text + resetCode;
     }
 
     public String lettersToType(List<String> wordsToType) {
-        StringBuilder generatedLetters = new StringBuilder();
-        for (String word : wordsToType) {
-            generatedLetters.append(word).append(" ");
-        }
-        return generatedLetters.toString().trim();
+        return String.join(" ", wordsToType).trim();
     }
 
     public void getStandardGameInstructions() {
         if (menu.getLanguage().equals("svenska")) {
             System.out.println("""
-                    Ett antal ord kommer att visas, skriv av orden.
-                    När du skrivit klart, tryck ENTER.
-                    Tryck på ENTER när du är redo att starta
-                    eller tryck '0' och ENTER för att avbryta!
-
-                    """);
+                Ett antal ord kommer att visas, skriv av orden.
+                När du skrivit klart, tryck ENTER.
+                Tryck på ENTER när du är redo att starta
+                eller tryck '0' och ENTER för att avbryta!
+                """);
         } else {
             System.out.println("""
-                    A number of words will be displayed.
-                    Type the words, when you're finished, press Enter.
-                    Press Enter when ready to start
-                    or press '0' and Enter to exit!
-
-                    """);
+                A number of words will be displayed.
+                Type the words, when you're finished, press Enter.
+                Press Enter when ready to start
+                or press '0' and Enter to exit!
+                """);
         }
     }
 
     public void getSpecialCharGameInstructions() {
         if (menu.getLanguage().equals("svenska")) {
             System.out.println("""
-                    Skriv in de tecken som visas samt mellanrum.
-                    När du skrivit klart, tryck ENTER!
-                    
-                    Tryck på ENTER när du är redo att starta!
-
-                    """);
+                Skriv in de tecken som visas samt mellanrum.
+                När du skrivit klart, tryck ENTER!
+                Tryck på ENTER när du är redo att starta!
+                """);
         } else {
             System.out.println("""
-                    Enter the characters as they appear,
-                    including the spaces. When done, press ENTER.
-                    
-                    Press ENTER when ready to start!
-
-                    """);
+                Enter the characters as they appear,
+                including the spaces. When done, press ENTER.
+                Press ENTER when ready to start!
+                """);
         }
     }
 
     public void startGame(Player loggedInPlayer) {
-        String wait; // Wait for user to press enter
-
         do {
-            if (menu.getLanguage().equals("svenska")) {
-                System.out.println("""
-                        1.Starta lätt spel
-                        2.Starta svårt spel(skiftlägeskänsligt)
-                        """);
-            } else {
-                System.out.println("""
-                        1.Start easy game
-                        2.Start hard game(case sensitive)
-                        """);
-            }
+            displayDifficultyMenu();
             int difficulty = userInputService.getIntInput();
+            if (difficulty == 0) break;
 
-            Result result = new Result();
             getStandardGameInstructions();
+            String wait = userInputService.nextLine(); // Wait for user to press enter
+            if (wait.equals("0")) break;
 
-            wait = userInputService.nextLine(); // Wait for user to press enter
-
-            if (wait.equals("0")) {
-                break;
-            }
-            String targetWords;
-            if (menu.getLanguage().equals("svenska")) {
-                targetWords = lettersToType(WordsToType.randomizeWords(WordsToType.words));
-                System.out.println(targetWords);
-            } else {
-                targetWords = lettersToType(WordsToType.randomizeWords(WordsToType.englishWords));
-                System.out.println(targetWords);
-            }
-
-            double startTime = System.currentTimeMillis();
-            String playerWords = userInputService.nextLine();
-
-            double endTime = System.currentTimeMillis();
-            double elapsedTimeInSeconds = (endTime - startTime) / 1000;
-
-            int[] accuracy;
-
-            if (difficulty == 1){
-                accuracy = calcAccuracy(targetWords, playerWords);
-            }else {
-                accuracy = calcAccuracyForCaseSensitive(targetWords, playerWords);
-            }
-
-            int accuracyPercentage = accuracy[0];
-            int mistakesCount = accuracy[1];
-            int correctCount = accuracy[2];
-
-            String formattedAccuracy = String.format("%d", accuracyPercentage);
-
-            if (menu.getLanguage().equals("svenska")) {
-                System.out.println("Det tog " + elapsedTimeInSeconds + "sekunder att skriva " +
-                        "klart!\n" +
-                        "Du hade en precision på " + formattedAccuracy + "%");
-                System.out.println("du hade " + mistakesCount + " fel");
-            } else {
-                System.out.println("It took " + elapsedTimeInSeconds + "seconds to finish!\n" +
-                        "Your precision was " + formattedAccuracy + "%");
-                System.out.println("You made " + mistakesCount + " mistakes");
-            }
-
-            int points = calcTotalPoints(accuracyPercentage,elapsedTimeInSeconds);
-
-            result.setTimeResult(elapsedTimeInSeconds);
-            result.setAmountResult(accuracyPercentage);
-            result.setResult(points);
-            result.setUser(loggedInPlayer);
-
-            resultRepo.save(result);
-
-            playerService.updateXPandLevel(loggedInPlayer,points);
-
-        } while (!wait.equals("0"));
-    }
-
-
-    public void startCharacterGame(Player loggedInPlayer) {
-        String wait;
-        do {
-            Result result = new Result();
-            getSpecialCharGameInstructions();
-            wait = userInputService.nextLine();
-
-            if (wait.equals("0")) {
-                break;
-            }
-
-            String targetWords = lettersToType(WordsToType.randomizeWords(WordsToType.characters));
+            String targetWords = generateTargetWords();
+            targetWords = colorize(targetWords, CYAN, RESET);
             System.out.println(targetWords);
 
             double startTime = System.currentTimeMillis();
-
             String playerWords = userInputService.nextLine();
+            double elapsedTimeInSeconds = (System.currentTimeMillis() - startTime) / 1000;
 
-            double endTime = System.currentTimeMillis();
-            double elapsedTimeInSeconds = (endTime - startTime) / 1000;
+            int[] accuracy = (difficulty == 1) ? calcAccuracy(targetWords, playerWords) : calcAccuracyForCaseSensitive(targetWords, playerWords);
 
-            int[] accuracy = calcAccuracy(targetWords,playerWords);
+            displayResults(loggedInPlayer, targetWords, elapsedTimeInSeconds, accuracy);
 
-            int accuracyPercentage = accuracy[0];
-            int mistakesCount = accuracy[1];
-            int correctCount = accuracy[2];
-
-            String formattedAccuracy = String.format("%d", accuracyPercentage);
-
-            if (menu.getLanguage().equals("svenska")) {
-                System.out.println("Det tog " + elapsedTimeInSeconds + "sekunder att skriva " +
-                        "klart!\n" +
-                        "Du hade en precision på " + formattedAccuracy + "%");
-                System.out.println("Du hade " + mistakesCount + " fel");
-            } else {
-                System.out.println("It took " + elapsedTimeInSeconds + "seconds to finish!\n" +
-                        "Your precision was " + formattedAccuracy + "%");
-                System.out.println("You made " + mistakesCount + " mistakes");
-            }
-
-            int points = calcTotalPoints(accuracyPercentage,elapsedTimeInSeconds);
-
-            result.setTimeResult(elapsedTimeInSeconds);
-            result.setAmountResult(accuracyPercentage);
-            result.setResult(points);
-            result.setUser(loggedInPlayer);
-            resultRepo.save(result);
-
-            playerService.updateXPandLevel(loggedInPlayer,points);
-        } while (!wait.equals("0"));
+        } while (true);
     }
 
-    public int calcTotalPoints(int accuracy, double elapsedTime){
-        int point = 100;
+    private void displayDifficultyMenu() {
+        if (menu.getLanguage().equals("svenska")) {
+            System.out.println("""
+                1.Starta lätt spel
+                2.Starta svårt spel(skiftlägeskänsligt)
+                0.Avsluta
+                """);
+        } else {
+            System.out.println("""
+                1.Start easy game
+                2.Start hard game(case sensitive)
+                0.Exit
+                """);
+        }
+    }
+
+    private String generateTargetWords() {
+        if (menu.getLanguage().equals("svenska")) {
+            return lettersToType(WordsToType.randomizeWords(WordsToType.words));
+        } else {
+            return lettersToType(WordsToType.randomizeWords(WordsToType.englishWords));
+        }
+    }
+
+    private void displayResults(Player loggedInPlayer, String targetWords, double elapsedTimeInSeconds, int[] accuracy) {
+        int accuracyPercentage = accuracy[0];
+        int mistakesCount = accuracy[1];
+        String formattedAccuracy = String.format("%d", accuracyPercentage);
+
+        if (menu.getLanguage().equals("svenska")) {
+            System.out.println("Det tog " + elapsedTimeInSeconds + " sekunder att skriva klart!\n" +
+                    "Du hade en precision på " + formattedAccuracy + "%");
+            System.out.println("Du hade " + mistakesCount + " fel");
+        } else {
+            System.out.println("It took " + elapsedTimeInSeconds + " seconds to finish!\n" +
+                    "Your precision was " + formattedAccuracy + "%");
+            System.out.println("You made " + mistakesCount + " mistakes");
+        }
+
+        int points = calcTotalPoints(accuracyPercentage, elapsedTimeInSeconds);
+        saveResults(loggedInPlayer, elapsedTimeInSeconds, accuracyPercentage, points);
+    }
+
+    private void saveResults(Player loggedInPlayer, double elapsedTimeInSeconds, int accuracyPercentage, int points) {
+        Result result = new Result();
+        result.setTimeResult(elapsedTimeInSeconds);
+        result.setAmountResult(accuracyPercentage);
+        result.setResult(points);
+        result.setUser(loggedInPlayer);
+        resultRepo.save(result);
+        playerService.updateXPandLevel(loggedInPlayer, points);
+    }
+
+    public void startCharacterGame(Player loggedInPlayer) {
+        do {
+            Result result = new Result();
+            getSpecialCharGameInstructions();
+            String wait = userInputService.nextLine();
+            if (wait.equals("0")) break;
+
+            String targetWords = lettersToType(WordsToType.randomizeWords(WordsToType.characters));
+            targetWords = colorize(targetWords, CYAN, RESET);
+            System.out.println(targetWords);
+
+            double startTime = System.currentTimeMillis();
+            String playerWords = userInputService.nextLine();
+            double elapsedTimeInSeconds = (System.currentTimeMillis() - startTime) / 1000;
+
+            int[] accuracy = calcAccuracy(targetWords, playerWords);
+            displayResults(loggedInPlayer, targetWords, elapsedTimeInSeconds, accuracy);
+
+        } while (true);
+    }
+
+    public int calcTotalPoints(int accuracy, double elapsedTime) {
+        int points = 100;
 
         if (elapsedTime > 20) {
             double extraTime = elapsedTime - 20;
-            point -= extraTime; // Deduct 1 point for each second over 20 seconds
+            points -= extraTime; // Deduct 1 point for each second over 20 seconds
         }
-        // Deduct points based on accuracy
         if (accuracy < 100) {
             int mistakes = 100 - accuracy;
-            point -= mistakes; // Deduct 1 point for each mistake made
+            points -= mistakes; // Deduct 1 point for each mistake made
         }
-        // Ensure total points are non-negative
-        point = Math.max(point, 0);
-        return point;
+        return Math.max(points, 0); // Ensure total points are non-negative
     }
 
     public int[] calcAccuracy(String targetWords, String playerWords) {
+        targetWords = removeAnsiCodes(targetWords);
+        playerWords = removeAnsiCodes(playerWords);
+
         int correctCount = 0;
         int mistakeCount = 0;
-
         int minLength = Math.min(targetWords.length(), playerWords.length());
-        int accuracy = 0;
+        int maxLength = Math.max(targetWords.length(), playerWords.length());
 
         for (int i = 0; i < minLength; i++) {
-            char goalChar = targetWords.charAt(i);
-            char playerChar = playerWords.charAt(i);
-
-            if (Character.toLowerCase(goalChar) == Character.toLowerCase(playerChar)) {
+            if (Character.toLowerCase(targetWords.charAt(i)) == Character.toLowerCase(playerWords.charAt(i))) {
                 correctCount++;
             } else {
                 mistakeCount++;
             }
-            accuracy = (int) ((double) correctCount / Math.max(targetWords.length(),
-                    playerWords.length()) * 100);
         }
-        return new int[]{accuracy,mistakeCount,correctCount};
+
+        // Räkna de extra tecknen i spelarinmatningen som felaktiga
+        mistakeCount += maxLength - minLength;
+
+        int accuracy = (int) ((double) correctCount / maxLength * 100);
+        return new int[]{accuracy, mistakeCount, correctCount};
     }
 
     public int[] calcAccuracyForCaseSensitive(String targetWords, String playerWords) {
+        targetWords = removeAnsiCodes(targetWords);
+        playerWords = removeAnsiCodes(playerWords);
+
         int correctCount = 0;
         int mistakeCount = 0;
-
         int minLength = Math.min(targetWords.length(), playerWords.length());
-        int accuracy = 0;
+        int maxLength = Math.max(targetWords.length(), playerWords.length());
+
         for (int i = 0; i < minLength; i++) {
-            char goalChar = targetWords.charAt(i);
-            char playerChar = playerWords.charAt(i);
-            if (goalChar == playerChar) {
+            if (targetWords.charAt(i) == playerWords.charAt(i)) {
                 correctCount++;
             } else {
                 mistakeCount++;
             }
-            accuracy = (int) ((double) correctCount / Math.max(targetWords.length(),
-                    playerWords.length()) * 100);
         }
-        return new int[]{accuracy,mistakeCount,correctCount};
+
+        // Räkna de extra tecknen i spelarinmatningen som felaktiga
+        mistakeCount += maxLength - minLength;
+
+        int accuracy = (int) ((double) correctCount / maxLength * 100);
+        return new int[]{accuracy, mistakeCount, correctCount};
+    }
+
+    // Method to remove ANSI color codes from a string
+    public static String removeAnsiCodes(String input) {
+        return input.replaceAll("\u001B\\[[;\\d]*m", "");
     }
 }
