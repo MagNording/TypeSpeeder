@@ -46,17 +46,14 @@ public class HandleMenuOptions {
         int option;
         do {
             menu.displayMenu();
-
             option = userInputService.getIntInput();
 
             Player player = authenticationService.getPlayer();
 
             switch (option) {
                 case 1 -> challengeMenu(player);
-                case 2 -> {
-                    System.out.println("Avsluta spel...");
-                    break;
-                }
+                case 2 -> { userInputService.outtro();
+                    System.exit(0);}
                 case 3 -> editUserMenu(player);
                 case 4 -> gameService.printTopResults();
                 case 5 -> System.out.println(newsLetter.getContent());
@@ -65,16 +62,13 @@ public class HandleMenuOptions {
                     if (language.equals("svenska")) {
                         System.out.println("Switching to English...");
                         menu.setLanguage("engelska");
-
                     } else {
                         System.out.println("Byter till svenska...");
                         menu.setLanguage("svenska");
-
                     }
                 }
                 default -> {
                     System.out.println("Invalid option. Please try again.");
-                    break;
                 }
             }
         } while (option != 2);
@@ -92,6 +86,7 @@ public class HandleMenuOptions {
                 // viewLoggedInPlayersStats, får ju faktiskt info om sitt resultat efter varje
                 // spelad runda!
                 case 3 -> gameService.printTopResults(); // findall på resultat
+                case 4 -> System.out.println("Exiting challenge menu...");
                 default -> {
                     System.out.println("Invalid option. Please try again.");
                     break;
@@ -102,7 +97,6 @@ public class HandleMenuOptions {
 
     public void editUserMenu(Player player) {
         int option = 0;
-
         do {
             editUserMenu.displayMenu();
             option = userInputService.getIntInput();
@@ -110,12 +104,12 @@ public class HandleMenuOptions {
                 case 1 -> playerService.editUserName(player);
                 case 2 -> playerService.editPassword(player);
                 case 3 -> playerService.editPlayerName(player);
+                case 4 -> System.out.println("Exiting edit user menu...");
                 default -> {
                     System.out.println("Invalid option. Please try again.");
                     break;
                 }
             }
-
         } while (option != 4);
     }
 

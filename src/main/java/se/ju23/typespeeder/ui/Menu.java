@@ -26,12 +26,12 @@ public class Menu implements MenuService {
     }
 
     public void loginMenu(){
-        System.out.println("""
-                Please choose an option below:
-                1 - Login
-                2 - Create new player
-                3 - Exit Program
-                >\s""");
+        System.out.print("""
+            Please choose an option below:
+            1 - Login
+            2 - Create new player
+            3 - Exit Program
+            >\s""");
     }
 
     @Override

@@ -36,8 +36,8 @@ public class Challenge {
         do {
             if (menu.getLanguage().equals("svenska")) {
                 System.out.println("""
-                    1. Starta ett ord-spel
-                    2. Starta ett bokstavs-spel
+                    1. Starta ett Ordspel
+                    2. Starta ett Bokstavsspel
                     3. Åter till spelmenyn
                     """);
             } else {
@@ -71,14 +71,18 @@ public class Challenge {
     public void getStandardGameInstructions() {
         if (menu.getLanguage().equals("svenska")) {
             System.out.println("""
-                    Ett antal ord kommer visas, skriv av orden. När du skrivit klart, tryck Enter.
-                    Tryck på Enter när du är redo att starta Eller tryck '0' och Enter för att avbryta!
+                    Ett antal ord kommer att visas, skriv av orden.
+                    När du skrivit klart, tryck ENTER.
+                    Tryck på ENTER när du är redo att starta
+                    eller tryck '0' och ENTER för att avbryta!
 
                     """);
         } else {
             System.out.println("""
-                    A number of words will be displayed. Type the words, and when you're finished, press Enter.
-                    Press Enter when ready to start or press '0' and Enter to exit!
+                    A number of words will be displayed.
+                    Type the words, when you're finished, press Enter.
+                    Press Enter when ready to start
+                    or press '0' and Enter to exit!
 
                     """);
         }
@@ -87,19 +91,18 @@ public class Challenge {
     public void getSpecialCharGameInstructions() {
         if (menu.getLanguage().equals("svenska")) {
             System.out.println("""
-                    Skriv in de tecken som visas med mellanrum där de visas.
-                    När du skrivit klart, tryck Enter!
+                    Skriv in de tecken som visas samt mellanrum.
+                    När du skrivit klart, tryck ENTER!
                     
-                    Tryck på Enter när du är redo att starta!
+                    Tryck på ENTER när du är redo att starta!
 
                     """);
         } else {
             System.out.println("""
                     Enter the characters as they appear,
-                    including spaces where they appear.
-                    when done, press Enter.
+                    including the spaces. When done, press ENTER.
                     
-                    Press Enter when ready to start!
+                    Press ENTER when ready to start!
 
                     """);
         }
