@@ -29,6 +29,20 @@ public class PlayerService {
         playerRepo.save(player);
     }
 
+    public void createNewPlayer() {
+        System.out.println("Enter player name: ");
+        String playername = userInputService.nextLine();
+
+        System.out.println("Enter username: ");
+        String username = userInputService.nextLine();
+
+        System.out.println("Enter password: ");
+        String password = userInputService.nextLine();
+
+        addNewPlayer(playername, username, password);
+        System.out.println("New player created successfully.");
+    }
+
     public void editUserName(Player player) {
         System.out.println("Ange nytt namn/Enter new name: ");
         String newName = userInputService.nextLine();

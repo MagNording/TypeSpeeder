@@ -12,6 +12,14 @@ public class UserInputService {
         return input.nextLine();
     }
 
+    public void intro() {
+        System.out.println("Welcome to TypeSpeeder!");
+    }
+
+    public void invalidChoice() {
+        System.out.println("Invalid choice. Please try again.");
+    }
+
     public int getIntInput() {
         String line = input.nextLine();
         try {
@@ -30,5 +38,9 @@ public class UserInputService {
         if (input.hasNextLine()) {
             input.nextLine();
         }
+    }
+
+    public void outtro() {
+        System.out.println("Thank you, welcome back!");
     }
 }

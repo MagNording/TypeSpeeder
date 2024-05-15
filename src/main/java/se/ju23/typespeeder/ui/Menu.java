@@ -17,13 +17,21 @@ public class Menu implements MenuService {
         this.language = language;
     }
 
-
     public String getLanguage() {
         return language;
     }
 
     public Menu(UserInputService userInputService) {
         this.userInputService = userInputService;
+    }
+
+    public void loginMenu(){
+        System.out.println("""
+                Please choose an option below:
+                1 - Login
+                2 - Create new player
+                3 - Exit Program
+                >\s""");
     }
 
     @Override

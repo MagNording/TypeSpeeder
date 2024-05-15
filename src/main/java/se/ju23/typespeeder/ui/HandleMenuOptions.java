@@ -88,8 +88,9 @@ public class HandleMenuOptions {
             switch (option) {
                 case 1 -> challenge.startChallenge(player);
                 case 2 -> System.out.println("Användarens resultat...");
-                //case 2 kan tas bort om du inte vill göra en metod i playerservice som heter viewLoggedInPlayersStat
-                // men som vi snackade om så får man ju faktiskt info om sitt resultat efter varje spelad runda!
+                //case 2 kan tas bort om jag inte vill göra en metod i playerservice som heter
+                // viewLoggedInPlayersStats, får ju faktiskt info om sitt resultat efter varje
+                // spelad runda!
                 case 3 -> gameService.printTopResults(); // findall på resultat
                 default -> {
                     System.out.println("Invalid option. Please try again.");

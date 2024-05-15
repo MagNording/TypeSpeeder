@@ -65,7 +65,6 @@ public class Result {
     @Override
     public String toString() {
         return "Result{" +
-                "id=" + id +
                 ", result=" + result +
                 ", timeResult=" + timeResult +
                 ", amountResult=" + amountResult +
