@@ -38,7 +38,7 @@ public class Menu implements MenuService {
     public List<String> getMenuOptions() {
         List<String> options = new ArrayList<>();
         options.add("1. Spela spel");
-        options.add("2. Avsluta spel");
+        options.add("2. Avsluta");
         options.add("3. Uppdatera spelare");
         options.add("4. Resultatlista");
         options.add("5. Nyhetsbrev");
@@ -49,7 +49,7 @@ public class Menu implements MenuService {
     public List<String> getMenuOptionsEnglish() {
         List<String> options = new ArrayList<>();
         options.add("1. Play game");
-        options.add("2. Finish game");
+        options.add("2. Exit program");
         options.add("3. Update player");
         options.add("4. Result list");
         options.add("5. NewsLetter");

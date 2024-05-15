@@ -38,13 +38,13 @@ public class Challenge {
                 System.out.println("""
                     1. Starta ett ord-spel
                     2. Starta ett bokstavs-spel
-                    3. Åter till meny
+                    3. Åter till spelmenyn
                     """);
             } else {
                 System.out.println("""
                     1. Start a words game
                     2. Start a single character game
-                    3. Back to main menu
+                    3. Back to game menu
                     """);
             }
             choice = userInputService.getIntInput();
@@ -116,7 +116,7 @@ public class Challenge {
                         """);
             } else {
                 System.out.println("""
-                        1.Starta easy game
+                        1.Start easy game
                         2.Start hard game(case sensitive)
                         """);
             }
