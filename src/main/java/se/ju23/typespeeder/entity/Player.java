@@ -1,6 +1,8 @@
 package se.ju23.typespeeder.entity;
 
 import jakarta.persistence.*;
+import se.ju23.typespeeder.util.Messages;
+
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -90,23 +92,25 @@ public class Player {
         return String.format("Playername: %s | XP: %d | Level: %d", playername, XP, level);
     }
 
-    public String generateResultsTable() {
+    public String generateResultsTable(Messages messages) {
         StringBuilder sb = new StringBuilder();
-        sb.append("Playername: ").append(playername).append(" | XP: ").append(XP).append(" | Level: ").append(level).append("\n");
-        sb.append("Results (latest 10):\n");
+        sb.append(messages.get("player.name")).append(": ").append(playername).append(" | ")
+                .append(messages.get("player.xp")).append(": ").append(XP).append(" | ")
+                .append(messages.get("player.level")).append(": ").append(level).append("\n");
+        sb.append(messages.get("results.latest")).append("\n");
 
         if (results != null && !results.isEmpty()) {
-            // sort by id
+            // Sort results by ID in descending order to get the latest ones
             results.sort(Comparator.comparingInt(Result::getId).reversed());
 
-            // Latest 10 results
+            // Get the latest 10 results
             List<Result> latestResults = results.stream().limit(10).toList();
 
             for (Result result : latestResults) {
-                sb.append(String.format("Time: %.3f | Result: %d | Percentage: %d%%\n", result.getTimeResult(), result.getResult(), result.getAmountResult()));
+                sb.append(result.toLocalizedString(messages)).append("\n");
             }
         } else {
-            sb.append("No results available.\n");
+            sb.append(messages.get("results.noResults")).append("\n");
         }
 
         return sb.toString();

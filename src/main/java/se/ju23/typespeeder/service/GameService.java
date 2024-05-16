@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.ju23.typespeeder.entity.Result;
 import se.ju23.typespeeder.ui.Menu;
+import se.ju23.typespeeder.util.Messages;
 
 import java.util.List;
 
@@ -13,11 +14,13 @@ public class GameService {
 
     private final EntityManager entityManager;
     private final Menu menu;
+    private Messages messages;
 
     @Autowired
     public GameService(EntityManager entityManager, Menu menu) {
         this.entityManager = entityManager;
         this.menu = menu;
+        this.messages = new Messages(menu.getLanguage());
     }
 
     public List<Result> getTopResultsByTime() {
@@ -42,11 +45,11 @@ public class GameService {
         List<Result> topResultsByAccuracy = getTopResultsByAccuracy();
 
         if (menu.getLanguage().equals("svenska")) {
-            System.out.println("Snabbaste spelarna: " + formatResults(topResultsByTime));
-            System.out.println("Mest korrekta spelarna: " + formatResults(topResultsByAccuracy));
+            System.out.println("Snabbaste spelarna: \n" + formatResults(topResultsByTime));
+            System.out.println("Mest korrekta spelarna: \n" + formatResults(topResultsByAccuracy));
         } else {
-            System.out.println("Fastest players: " + formatResults(topResultsByTime));
-            System.out.println("Most accurate players: " + formatResults(topResultsByAccuracy));
+            System.out.println("Fastest players: \n" + formatResults(topResultsByTime));
+            System.out.println("Most accurate players: \n" + formatResults(topResultsByAccuracy));
         }
     }
 

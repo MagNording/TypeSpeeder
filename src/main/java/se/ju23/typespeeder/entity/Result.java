@@ -1,6 +1,7 @@
 package se.ju23.typespeeder.entity;
 
 import jakarta.persistence.*;
+import se.ju23.typespeeder.util.Messages;
 
 @Entity
 @Table(name = "results")
@@ -67,6 +68,13 @@ public class Result {
         return String.format("Playername: %s | XP: %d | Level: %d | Time: %.3f | Result: %d " +
                         "| Percentage: %d",
                 player.getPlayername(), player.getXP(), player.getLevel(), timeResult, result, amountResult);
+    }
+
+    public String toLocalizedString(Messages messages) {
+        return String.format("%s: %.3f | %s: %d | %s: %d%%",
+                messages.get("results.time"), timeResult,
+                messages.get("results.result"), result,
+                messages.get("results.amount"), amountResult);
     }
 }
 

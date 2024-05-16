@@ -3,6 +3,7 @@ package se.ju23.typespeeder.ui;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import se.ju23.typespeeder.NewsLetter;
@@ -12,6 +13,7 @@ import se.ju23.typespeeder.logic.Challenge;
 import se.ju23.typespeeder.service.AuthenticationService;
 import se.ju23.typespeeder.service.GameService;
 import se.ju23.typespeeder.service.PlayerService;
+import se.ju23.typespeeder.util.Messages;
 import se.ju23.typespeeder.util.UserInputService;
 
 @Component
@@ -82,6 +84,7 @@ public class HandleMenuOptions {
 
     public void challengeMenu(Player player) {
         int option = 0;
+        Messages messages = new Messages(menu.getLanguage());
         do {
             challengeMenu.displayMenu();
             option = userInputService.getIntInput();
@@ -94,7 +97,7 @@ public class HandleMenuOptions {
                     Player managedPlayer = em.find(Player.class, player.getId());
                     managedPlayer.getResults().size();
 
-                    System.out.println(managedPlayer.generateResultsTable());
+                    System.out.println(managedPlayer.generateResultsTable(messages));
 
                     em.getTransaction().commit();
                     em.close();
@@ -109,13 +112,14 @@ public class HandleMenuOptions {
                     em.getTransaction().commit();
                     em.close();
                 }
-                case 4 -> System.out.println("Exiting challenge menu...");
-                default -> System.out.println("Invalid option. Please try again.");
+                case 4 -> System.out.println(messages.get("exit.message"));
+                default -> System.out.println(messages.get("invalid.option"));
             }
         } while (option != 4);
     }
 
     public void editUserMenu(Player player) {
+        Messages messages = new Messages(menu.getLanguage());
         int option = 0;
         do {
             editUserMenu.displayMenu();
@@ -124,8 +128,8 @@ public class HandleMenuOptions {
                 case 1 -> playerService.editUserName(player);
                 case 2 -> playerService.editPassword(player);
                 case 3 -> playerService.editPlayerName(player);
-                case 4 -> System.out.println("Exiting edit user menu...");
-                default -> System.out.println("Invalid option. Please try again.");
+                case 4 -> System.out.println(messages.get("exit.message"));
+                default -> System.out.println(messages.get("invalid.option"));
             }
         } while (option != 4);
     }
