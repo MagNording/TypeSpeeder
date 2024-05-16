@@ -35,10 +35,10 @@ public class GameService {
     }
 
     public void printTopResults(){
-        if (menu.getLanguage().equals("svenska")){
+        if (menu.getLanguage().equals("svenska")) {
             System.out.println(" Snabbaste spelarna: "+ getTopResultsByTime()
                     + "\nMest korrekta spelarna: " + getTopResultsByAccuracy());
-        }else {
+        } else {
             System.out.println(" Fastest players: "+ getTopResultsByTime()
                     + "\nMost accurate players: " + getTopResultsByAccuracy());
         }
