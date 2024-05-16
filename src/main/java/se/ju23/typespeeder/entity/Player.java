@@ -1,9 +1,9 @@
 package se.ju23.typespeeder.entity;
 
 import jakarta.persistence.*;
-
-
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "players")
@@ -87,9 +87,32 @@ public class Player {
 
     @Override
     public String toString() {
-        return "\033[1mPlayername: \033[0m " + playername + " | " +
-                "\033[1mXP:\033[0m " + XP + " | " +
-                "\033[1mLevel:\033[0m " + level + " | ";
+        return String.format("Playername: %s | XP: %d | Level: %d", playername, XP, level);
     }
+
+
+
+    public String generateResultsTable() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Playername: ").append(playername).append(" | XP: ").append(XP).append(" | Level: ").append(level).append("\n");
+        sb.append("Results (latest 10):\n");
+
+        if (results != null && !results.isEmpty()) {
+            // Sortera by id
+            results.sort(Comparator.comparingInt(Result::getId).reversed());
+
+            // Get latest 10
+            List<Result> latestResults = results.stream().limit(10).toList();
+
+            for (Result result : latestResults) {
+                sb.append(result).append("\n");
+            }
+        } else {
+            sb.append("No results available.\n");
+        }
+
+        return sb.toString();
+    }
+
 }
 

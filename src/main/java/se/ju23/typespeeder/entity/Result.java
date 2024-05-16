@@ -13,7 +13,7 @@ public class Result {
     private double timeResult; //hur lång tid ett game tar
     private int amountResult; //antal rätt i procent
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "playername", referencedColumnName = "id")
     private Player player;
 
@@ -64,10 +64,8 @@ public class Result {
 
     @Override
     public String toString() {
-        return  "\n" + player +
-                " Time: " + timeResult +
-                " Result: " + result +
-                " Amount: " + amountResult;
+        return String.format("Playername: %s | XP: %d | Level: %d | Time: %.3f | Result: %d | Amount: %d",
+                player.getPlayername(), player.getXP(), player.getLevel(), timeResult, result, amountResult);
     }
 }
 

@@ -1,5 +1,7 @@
 package se.ju23.typespeeder.ui;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -43,6 +45,9 @@ public class HandleMenuOptions {
     @Autowired
     EditUserMenu editUserMenu;
 
+    @Autowired
+    EntityManagerFactory entityManagerFactory;
+
     public void mainMenu() {
         int option;
         do {
@@ -82,8 +87,28 @@ public class HandleMenuOptions {
             option = userInputService.getIntInput();
             switch (option) {
                 case 1 -> challenge.startChallenge(player);
-                case 2 -> System.out.println(player.toString());
-                case 3 -> gameService.printTopResults();
+                case 2 -> {
+                    EntityManager em = entityManagerFactory.createEntityManager();
+                    em.getTransaction().begin();
+
+                    Player managedPlayer = em.find(Player.class, player.getId());
+                    managedPlayer.getResults().size();
+
+                    System.out.println(managedPlayer.generateResultsTable());
+
+                    em.getTransaction().commit();
+                    em.close();
+                }
+                case 3 -> {
+                    EntityManager em = entityManagerFactory.createEntityManager();
+                    em.getTransaction().begin();
+
+                    GameService gameService = new GameService(em, menu);
+                    gameService.printTopResults();
+
+                    em.getTransaction().commit();
+                    em.close();
+                }
                 case 4 -> System.out.println("Exiting challenge menu...");
                 default -> System.out.println("Invalid option. Please try again.");
             }

@@ -21,27 +21,41 @@ public class GameService {
     }
 
     public List<Result> getTopResultsByTime() {
-        // Hämta de snabbaste resultaten från databasen
-        return entityManager.createQuery("SELECT r FROM Result r ORDER BY r.timeResult ASC", Result.class)
-                .setMaxResults(20)
+        // Hämta de snabbaste resultaten från databasen med spelarinformation
+        return entityManager.createQuery(
+                        "SELECT r FROM Result r JOIN FETCH r.player p ORDER BY r.timeResult ASC", Result.class)
+                .setMaxResults(10)
                 .getResultList();
     }
 
     public List<Result> getTopResultsByAccuracy() {
-        // Hämta de mest korrekta resultaten från databasen
-        return entityManager.createQuery("SELECT r FROM Result r ORDER BY r.amountResult DESC", Result.class)
-                .setMaxResults(20)
+        // Hämta de mest korrekta resultaten från databasen med spelarinformation
+        return entityManager.createQuery(
+                        "SELECT r FROM Result r JOIN FETCH r.player p ORDER BY r.amountResult DESC", Result.class)
+                .setMaxResults(10)
                 .getResultList();
     }
 
-    public void printTopResults(){
+
+    public void printTopResults() {
+        List<Result> topResultsByTime = getTopResultsByTime();
+        List<Result> topResultsByAccuracy = getTopResultsByAccuracy();
+
         if (menu.getLanguage().equals("svenska")) {
-            System.out.println(" Snabbaste spelarna: "+ getTopResultsByTime()
-                    + "\nMest korrekta spelarna: " + getTopResultsByAccuracy());
+            System.out.println("Snabbaste spelarna: " + formatResults(topResultsByTime));
+            System.out.println("Mest korrekta spelarna: " + formatResults(topResultsByAccuracy));
         } else {
-            System.out.println(" Fastest players: "+ getTopResultsByTime()
-                    + "\nMost accurate players: " + getTopResultsByAccuracy());
+            System.out.println("Fastest players: " + formatResults(topResultsByTime));
+            System.out.println("Most accurate players: " + formatResults(topResultsByAccuracy));
         }
+    }
+
+    private String formatResults(List<Result> results) {
+        StringBuilder sb = new StringBuilder();
+        for (Result result : results) {
+            sb.append(result).append("\n");
+        }
+        return sb.toString();
     }
 
 }
