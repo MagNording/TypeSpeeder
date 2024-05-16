@@ -64,7 +64,8 @@ public class Result {
 
     @Override
     public String toString() {
-        return String.format("Playername: %s | XP: %d | Level: %d | Time: %.3f | Result: %d | Amount: %d",
+        return String.format("Playername: %s | XP: %d | Level: %d | Time: %.3f | Result: %d " +
+                        "| Percentage: %d",
                 player.getPlayername(), player.getXP(), player.getLevel(), timeResult, result, amountResult);
     }
 }

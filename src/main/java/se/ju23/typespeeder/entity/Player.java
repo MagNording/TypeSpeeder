@@ -90,22 +90,20 @@ public class Player {
         return String.format("Playername: %s | XP: %d | Level: %d", playername, XP, level);
     }
 
-
-
     public String generateResultsTable() {
         StringBuilder sb = new StringBuilder();
         sb.append("Playername: ").append(playername).append(" | XP: ").append(XP).append(" | Level: ").append(level).append("\n");
         sb.append("Results (latest 10):\n");
 
         if (results != null && !results.isEmpty()) {
-            // Sortera by id
+            // sort by id
             results.sort(Comparator.comparingInt(Result::getId).reversed());
 
-            // Get latest 10
+            // Latest 10 results
             List<Result> latestResults = results.stream().limit(10).toList();
 
             for (Result result : latestResults) {
-                sb.append(result).append("\n");
+                sb.append(String.format("Time: %.3f | Result: %d | Percentage: %d%%\n", result.getTimeResult(), result.getResult(), result.getAmountResult()));
             }
         } else {
             sb.append("No results available.\n");
