@@ -74,6 +74,7 @@ public class HandleMenuOptions {
                         System.out.println("Byter till svenska...");
                         menu.setLanguage("svenska");
                     }
+                    gameService.updateMessages();
                 }
                 default -> {
                     System.out.println("Invalid option. Please try again.");

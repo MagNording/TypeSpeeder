@@ -1,6 +1,7 @@
 package se.ju23.typespeeder.service;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.ju23.typespeeder.entity.Result;
@@ -12,11 +13,19 @@ import java.util.List;
 @Service
 public class GameService {
 
-    private final EntityManager entityManager;
+    @PersistenceContext
+    private EntityManager entityManager;
     private final Menu menu;
     private Messages messages;
 
     @Autowired
+    public GameService(Menu menu) {
+        this.menu = menu;
+        this.messages = new Messages(menu.getLanguage());
+
+    }
+
+    // Additional constructor to accept a temporary EntityManager
     public GameService(EntityManager entityManager, Menu menu) {
         this.entityManager = entityManager;
         this.menu = menu;
@@ -39,26 +48,26 @@ public class GameService {
                 .getResultList();
     }
 
-
     public void printTopResults() {
         List<Result> topResultsByTime = getTopResultsByTime();
         List<Result> topResultsByAccuracy = getTopResultsByAccuracy();
 
-        if (menu.getLanguage().equals("svenska")) {
-            System.out.println("Snabbaste spelarna: \n" + formatResults(topResultsByTime));
-            System.out.println("Mest korrekta spelarna: \n" + formatResults(topResultsByAccuracy));
-        } else {
-            System.out.println("Fastest players: \n" + formatResults(topResultsByTime));
-            System.out.println("Most accurate players: \n" + formatResults(topResultsByAccuracy));
-        }
+        System.out.println(messages.get("results.fastest"));
+        System.out.println(formatResults(topResultsByTime));
+
+        System.out.println(messages.get("results.mostAccurate"));
+        System.out.println(formatResults(topResultsByAccuracy));
     }
 
     private String formatResults(List<Result> results) {
         StringBuilder sb = new StringBuilder();
         for (Result result : results) {
-            sb.append(result).append("\n");
+            sb.append(result.toLocalizedString(messages)).append("\n");
         }
         return sb.toString();
     }
 
+    public void updateMessages() {
+        this.messages = new Messages(menu.getLanguage());
+    }
 }

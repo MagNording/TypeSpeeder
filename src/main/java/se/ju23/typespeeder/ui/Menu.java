@@ -11,7 +11,7 @@ public class Menu implements MenuService {
 
     private final UserInputService userInputService;
 
-    private String language;
+    private String language = "svenska";
 
     public void setLanguage(String language) {
         this.language = language;

@@ -71,7 +71,10 @@ public class Result {
     }
 
     public String toLocalizedString(Messages messages) {
-        return String.format("%s: %.3f | %s: %d | %s: %d%%",
+        return String.format("%s: %s | %s: %d | %s: %d | %s: %.3f | %s: %d | %s: %d%%",
+                messages.get("player.name"), player.getPlayername(),
+                messages.get("player.xp"), player.getXP(),
+                messages.get("player.level"), player.getLevel(),
                 messages.get("results.time"), timeResult,
                 messages.get("results.result"), result,
                 messages.get("results.amount"), amountResult);
