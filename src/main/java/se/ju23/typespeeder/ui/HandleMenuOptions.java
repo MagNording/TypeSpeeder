@@ -82,16 +82,10 @@ public class HandleMenuOptions {
             option = userInputService.getIntInput();
             switch (option) {
                 case 1 -> challenge.startChallenge(player);
-                case 2 -> System.out.println("Användarens resultat...");
-                //case 2 kan tas bort om jag inte vill göra en metod i playerservice som heter
-                // viewLoggedInPlayersStats, får ju faktiskt info om sitt resultat efter varje
-                // spelad runda!
+                case 2 -> System.out.println(player.toString());
                 case 3 -> gameService.printTopResults();
                 case 4 -> System.out.println("Exiting challenge menu...");
-                default -> {
-                    System.out.println("Invalid option. Please try again.");
-                    break;
-                }
+                default -> System.out.println("Invalid option. Please try again.");
             }
         } while (option != 4);
     }
@@ -106,10 +100,7 @@ public class HandleMenuOptions {
                 case 2 -> playerService.editPassword(player);
                 case 3 -> playerService.editPlayerName(player);
                 case 4 -> System.out.println("Exiting edit user menu...");
-                default -> {
-                    System.out.println("Invalid option. Please try again.");
-                    break;
-                }
+                default -> System.out.println("Invalid option. Please try again.");
             }
         } while (option != 4);
     }

@@ -64,12 +64,10 @@ public class Result {
 
     @Override
     public String toString() {
-        return "Result{" +
-                ", result=" + result +
-                ", timeResult=" + timeResult +
-                ", amountResult=" + amountResult +
-                ", player=" + player +
-                '}';
+        return  "\n" + player +
+                " Time: " + timeResult +
+                " Result: " + result +
+                " Amount: " + amountResult;
     }
 }
 
