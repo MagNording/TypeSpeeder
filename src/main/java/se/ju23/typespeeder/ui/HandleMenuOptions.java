@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import se.ju23.typespeeder.NewsLetter;
+import se.ju23.typespeeder.Patch;
 import se.ju23.typespeeder.entity.Player;
 import se.ju23.typespeeder.logic.Challenge;
 import se.ju23.typespeeder.service.AuthenticationService;
@@ -85,7 +86,7 @@ public class HandleMenuOptions {
                 //case 2 kan tas bort om jag inte vill göra en metod i playerservice som heter
                 // viewLoggedInPlayersStats, får ju faktiskt info om sitt resultat efter varje
                 // spelad runda!
-                case 3 -> gameService.printTopResults(); // findall på resultat
+                case 3 -> gameService.printTopResults();
                 case 4 -> System.out.println("Exiting challenge menu...");
                 default -> {
                     System.out.println("Invalid option. Please try again.");
@@ -111,6 +112,12 @@ public class HandleMenuOptions {
                 }
             }
         } while (option != 4);
+    }
+
+    public void showVersion(){
+        Patch patch = new Patch();
+        patch.setPatchVersion("1.5.2");
+        System.out.println("Version: " + patch.getPatchVersion());
     }
 
 }

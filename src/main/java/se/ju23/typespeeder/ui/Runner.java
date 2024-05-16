@@ -15,20 +15,23 @@ public class Runner implements CommandLineRunner {
     private final PlayerService playerService;
     private final UserInputService userInputService;
     private final Menu menu;
+    private final HandleMenuOptions handleMenuOptions;
 
     @Autowired
     public Runner(AuthenticationService authenticationService, PlayerService playerService,
-                  UserInputService userInputService, Menu menu) {
+                  UserInputService userInputService, Menu menu, HandleMenuOptions handleMenuOptions) {
         this.authenticationService = authenticationService;
         this.playerService = playerService;
         this.userInputService = userInputService;
         this.menu = menu;
+        this.handleMenuOptions = handleMenuOptions;
     }
 
     @Override
     public void run(String... args) {
         boolean exitProgram = false;
 
+        handleMenuOptions.showVersion();
         userInputService.intro();
 
         do {
