@@ -107,7 +107,7 @@ public class Player {
             List<Result> latestResults = results.stream().limit(10).toList();
 
             for (Result result : latestResults) {
-                sb.append(result.toLocalizedString(messages)).append("\n");
+                sb.append(result.toLocalizedStringWithoutPlayer(messages)).append("\n");
             }
         } else {
             sb.append(messages.get("results.noResults")).append("\n");

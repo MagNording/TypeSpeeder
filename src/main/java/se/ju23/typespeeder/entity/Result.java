@@ -79,5 +79,12 @@ public class Result {
                 messages.get("results.result"), result,
                 messages.get("results.amount"), amountResult);
     }
+
+    public String toLocalizedStringWithoutPlayer(Messages messages) {
+        return String.format("%s: %.3f | %s: %d | %s: %d%%",
+                messages.get("results.time"), timeResult,
+                messages.get("results.result"), result,
+                messages.get("results.amount"), amountResult);
+    }
 }
 

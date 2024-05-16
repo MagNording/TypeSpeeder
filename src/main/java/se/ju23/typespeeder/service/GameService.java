@@ -25,7 +25,7 @@ public class GameService {
 
     }
 
-    // Additional constructor to accept a temporary EntityManager
+    // to accept a temporary EntityManager
     public GameService(EntityManager entityManager, Menu menu) {
         this.entityManager = entityManager;
         this.menu = menu;
@@ -33,7 +33,7 @@ public class GameService {
     }
 
     public List<Result> getTopResultsByTime() {
-        // Hämta de snabbaste resultaten från databasen med spelarinformation
+        // Hämta de snabbaste resultaten från databasen
         return entityManager.createQuery(
                         "SELECT r FROM Result r JOIN FETCH r.player p ORDER BY r.timeResult ASC", Result.class)
                 .setMaxResults(10)
@@ -41,7 +41,7 @@ public class GameService {
     }
 
     public List<Result> getTopResultsByAccuracy() {
-        // Hämta de mest korrekta resultaten från databasen med spelarinformation
+        // Hämta de mest korrekta resultaten från databasen
         return entityManager.createQuery(
                         "SELECT r FROM Result r JOIN FETCH r.player p ORDER BY r.amountResult DESC", Result.class)
                 .setMaxResults(10)
