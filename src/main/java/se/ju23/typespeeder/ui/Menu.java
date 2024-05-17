@@ -1,6 +1,7 @@
 package se.ju23.typespeeder.ui;
 
 import org.springframework.stereotype.Component;
+import se.ju23.typespeeder.util.Messages;
 import se.ju23.typespeeder.util.UserInputService;
 
 import java.util.ArrayList;
@@ -10,8 +11,7 @@ import java.util.List;
 public class Menu implements MenuService {
 
     private final UserInputService userInputService;
-
-    private String language = "svenska";
+    private String language = "sv";
 
     public void setLanguage(String language) {
         this.language = language;
@@ -36,26 +36,17 @@ public class Menu implements MenuService {
 
     @Override
     public List<String> getMenuOptions() {
+        Messages messages = new Messages(language);
         List<String> options = new ArrayList<>();
-        options.add("1. Spela spel");
-        options.add("2. Avsluta");
-        options.add("3. Uppdatera spelare");
-        options.add("4. Resultatlista");
-        options.add("5. Nyhetsbrev");
-        options.add("6. Byt till engelska");
+        options.add(messages.get("menu.option.play"));
+        options.add(messages.get("menu.option.exit"));
+        options.add(messages.get("menu.option.updatePlayer"));
+        options.add(messages.get("menu.option.resultList"));
+        options.add(messages.get("menu.option.newsLetter"));
+        options.add(messages.get("menu.option.switchLanguage"));
         return options;
     }
 
-    public List<String> getMenuOptionsEnglish() {
-        List<String> options = new ArrayList<>();
-        options.add("1. Play game");
-        options.add("2. Exit program");
-        options.add("3. Update player");
-        options.add("4. Result list");
-        options.add("5. NewsLetter");
-        options.add("6. Switch to swedish");
-        return options;
-    }
 
     public void languageChoice() {
         String selectedLanguage = "";
@@ -64,29 +55,25 @@ public class Menu implements MenuService {
             selectedLanguage = userInputService.nextLine().toLowerCase().trim();
 
             switch (selectedLanguage) {
-                case "svenska", "s":
+                case "svenska", "s" -> {
                     System.out.println("Svenska valt.");
-                    language = "svenska";
-                    break;
-                case "engelska", "e":
-                    System.out.println("Engelska valt.");
-                    language = "engelska";
-                    break;
-                default:
+                    language = "sv";}
+                case "engelska", "e" -> {
+                    System.out.println("English chosen.");
+                    language = "en"; }
+                default ->
                     System.out.println("Invalid language selection. Please try again.");
             }
         }
     }
 
     public void displayMenu() {
-
         if(language == null){
             languageChoice();
         }
-
-        List<String> menuOptions = language.equalsIgnoreCase("svenska") ? getMenuOptions() : getMenuOptionsEnglish();
-        System.out.println("Menu Options - " + language + ": ");
+        List<String> menuOptions = getMenuOptions();
+        System.out.println("Menu Options - " +
+                (language.equals("sv") ? "Svenska" : "English") + ": ");
         menuOptions.forEach(System.out::println);
-
     }
 }

@@ -67,12 +67,12 @@ public class HandleMenuOptions {
                 case 5 -> System.out.println(newsLetter.getContent());
                 case 6 -> {
                     String language = menu.getLanguage();
-                    if (language.equals("svenska")) {
+                    if (language.equals("sv")) {
                         System.out.println("Switching to English...");
-                        menu.setLanguage("engelska");
+                        menu.setLanguage("en");
                     } else {
                         System.out.println("Byter till svenska...");
-                        menu.setLanguage("svenska");
+                        menu.setLanguage("sv");
                     }
                     gameService.updateMessages();
                 }
