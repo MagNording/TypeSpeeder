@@ -1,86 +1,76 @@
 package se.ju23.typespeeder.ui;
 
 import org.springframework.stereotype.Component;
+import se.ju23.typespeeder.util.Messages;
 import se.ju23.typespeeder.util.UserInputService;
-import se.ju23.typespeeder.util.UserInputServiceImpl;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
 
 @Component
 public class Menu implements MenuService {
-    Scanner input = new Scanner(System.in);
-    private String language = "svenska";
 
-    private UserInputService userInputService;
+    private final UserInputService userInputService;
+    private String language;
 
-    public void setUserInputService(UserInputService userInputService) {
+    public Menu(UserInputService userInputService) {
         this.userInputService = userInputService;
+        promptLanguageChoice();
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void loginMenu() {
+        Messages messages = new Messages(language);
+        System.out.println(messages.get("login.menu.prompt"));
+        System.out.println(messages.get("login.menu.option1"));
+        System.out.println(messages.get("login.menu.option2"));
+        System.out.println(messages.get("login.menu.option3"));
+        System.out.print(">\s");
     }
 
     @Override
     public List<String> getMenuOptions() {
+        Messages messages = new Messages(language);
         List<String> options = new ArrayList<>();
-        options.add("1. Spela spel");
-        options.add("2. Avsluta spel");
-        options.add("3. Lägg till spelare");
-        options.add("4. Mina resultat");
-        options.add("5. Resultatlista");
-        options.add("6. Byt till engelska");
+        options.add(messages.get("menu.option.play"));
+        options.add(messages.get("menu.option.exit"));
+        options.add(messages.get("menu.option.updatePlayer"));
+        options.add(messages.get("menu.option.resultList"));
+        options.add(messages.get("menu.option.newsLetter"));
+        options.add(messages.get("menu.option.switchLanguage"));
         return options;
     }
 
-    public List<String> getMenuOptionsEnglish() {
-        List<String> options = new ArrayList<>();
-        options.add("1. Play game");
-        options.add("2. Finish game");
-        options.add("3. Add player");
-        options.add("4. My results");
-        options.add("5. Result list");
-        options.add("6. Switch to swedish");
-        return options;
-    }
-
-    @Override
     public void displayMenu() {
-        languageChoice();
-        List<String> menuOptions;
-        if (language.equalsIgnoreCase("svenska")) {
-            menuOptions = getMenuOptions();
-            System.out.println("Meny Alternativ - " + language + ": ");
-        } else {
-            menuOptions = getMenuOptionsEnglish();
-            System.out.println("Menu Alternativ - " + language + ": ");
-        }
-        for (String option : menuOptions) {
-            System.out.println(option);
-        }
+        List<String> menuOptions = getMenuOptions();
+        System.out.println("Menu Options - " +
+                (language.equals("sv") ? "svenska" : "english") + ": ");
+        menuOptions.forEach(System.out::println);
     }
 
-    public void languageChoice() {
-        try {
-            System.out.println("Välj språk (svenska/engelska):");
-            String selectedLanguage = "svenska";
+    public void promptLanguageChoice() {
+        String selectedLanguage = "";
+        System.out.print("Välj språk (svenska/engelska): \n> ");
+        while (!selectedLanguage.equals("svenska") && !selectedLanguage.equals("engelska")) {
+            selectedLanguage = userInputService.nextLine().toLowerCase().trim();
 
-            while (selectedLanguage.isBlank()) {
-                if (input.hasNextLine()) {
-                    selectedLanguage = userInputService.readString().toLowerCase();
-                } else {
-                    System.out.println("No input detected. Please enter a language choice.");
-                }
+            switch (selectedLanguage) {
+                case "svenska", "s" -> {
+                    System.out.println("Svenska valt.");
+                    language = "sv";}
+                case "engelska", "e" -> {
+                    System.out.println("English chosen.");
+                    language = "en"; }
+                default ->
+                    System.out.println("Invalid language selection. Please try again.");
             }
-            if (selectedLanguage.equals("svenska") || selectedLanguage.equals("s")) {
-                System.out.println("Svenska valt.");
-                language = "svenska";
-            } else if (selectedLanguage.equals("engelska") || selectedLanguage.equals("e")) {
-                language = "engelska";
-            } else {
-                System.out.println("Invalid language selection. Default language set to English.");
-                language = "English";
-            }
-        } catch (NoSuchElementException e) {
-            throw new NoSuchElementException(e);
         }
     }
 }

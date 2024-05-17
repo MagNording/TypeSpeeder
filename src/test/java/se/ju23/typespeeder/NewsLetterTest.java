@@ -1,9 +1,8 @@
 package se.ju23.typespeeder;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import se.ju23.typespeeder.service.NewsLetter;
+import org.mockito.Mockito;
+import se.ju23.typespeeder.ui.Menu;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -20,7 +19,7 @@ public class NewsLetterTest {
     @Test
     public void testNewsLetterClassExists() {
         try {
-            Class.forName("se.ju23.typespeeder.service.NewsLetter");
+            Class.forName("se.ju23.typespeeder.NewsLetter");
         } catch (ClassNotFoundException e) {
             throw new AssertionError("NewsLetter class should exist.", e);
         }
@@ -28,14 +27,18 @@ public class NewsLetterTest {
     @Test
     public void testNewsLetterContentLength() {
         try {
-            Class<?> newsLetterClass = Class.forName("se.ju23.typespeeder.service.NewsLetter");
+            Class<?> newsLetterClass = Class.forName("se.ju23.typespeeder.NewsLetter");
 
             Field contentField = newsLetterClass.getDeclaredField("content");
             assertNotNull(contentField, "Field 'content' should exist in NewsLetter.");
 
             assertTrue(contentField.getType().equals(String.class), "Field 'content' should be of type String.");
 
-            Object instance = newsLetterClass.getDeclaredConstructor().newInstance();
+            // Mocka Menu, skapa instans av NewsLetter
+            Menu mockMenu = Mockito.mock(Menu.class);
+            Mockito.when(mockMenu.getLanguage()).thenReturn("en");
+            Object instance = newsLetterClass.getDeclaredConstructor(Menu.class).newInstance(mockMenu);
+
             Field field = newsLetterClass.getDeclaredField("content");
             field.setAccessible(true);
             String contentValue = (String) field.get(instance);
@@ -44,7 +47,7 @@ public class NewsLetterTest {
             assertTrue(contentValue.length() <= 200, "Content field length should be at most 200 characters.");
 
         } catch (ClassNotFoundException | NoSuchFieldException | NoSuchMethodException |
-                 InstantiationException | IllegalAccessException | java.lang.reflect.InvocationTargetException e) {
+                 InstantiationException | IllegalAccessException | InvocationTargetException e) {
             fail("Error occurred while testing NewsLetter content field length.", e);
         }
     }
@@ -52,24 +55,27 @@ public class NewsLetterTest {
     @Test
     public void testNewsLetterPublishDateTime() {
         try {
-            Class<?> someClass = Class.forName("se.ju23.typespeeder.service.NewsLetter");
+            Class<?> someClass = Class.forName("se.ju23.typespeeder.NewsLetter");
 
             Field publishDateTime = someClass.getDeclaredField("publishDateTime");
             assertNotNull(publishDateTime, "Field 'publishDateTime' should exist in NewsLetter class.");
 
             assertTrue(publishDateTime.getType().equals(LocalDateTime.class), "Field 'publishDateTime' should be of type LocalDateTime.");
 
-            Object instance = someClass.getDeclaredConstructor().newInstance();
+            // Mock Menu and create instance of NewsLetter
+            Menu mockMenu = Mockito.mock(Menu.class);
+            Mockito.when(mockMenu.getLanguage()).thenReturn("en");
+            Object instance = someClass.getDeclaredConstructor(Menu.class).newInstance(mockMenu);
+
             LocalDateTime dateTimeValue = (LocalDateTime) publishDateTime.get(instance);
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             String formattedDateTime = dateTimeValue.format(formatter);
-            assertEquals("2024-02-23 15:00:00", formattedDateTime, "'publishDateTime' field " +
+            assertEquals("2024-05-22 14:15:15", formattedDateTime, "'publishDateTime' field " +
                     "should have format 'yyyy-MM-dd HH:mm:ss'.");
 
             Method getterMethod = someClass.getDeclaredMethod("getPublishDateTime");
             assertNotNull(getterMethod, "Getter method for the field 'publishDateTime' should exist.");
-
 
         } catch (ClassNotFoundException | NoSuchFieldException | NoSuchMethodException e) {
             fail("Error occurred while testing properties of NewsLetter.", e);

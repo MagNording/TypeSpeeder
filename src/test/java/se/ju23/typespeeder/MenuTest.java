@@ -11,8 +11,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.List;
 import org.mockito.Mockito;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
+import se.ju23.typespeeder.entity.Player;
 import se.ju23.typespeeder.ui.Menu;
 import se.ju23.typespeeder.ui.MenuService;
+import se.ju23.typespeeder.util.UserInputService;
 
 import static org.mockito.Mockito.*;
 
@@ -20,8 +23,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class MenuTest {
 
-    private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+    private final InputStream originalIn = System.in;
     private final PrintStream originalOut = System.out;
+    private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
 
     @BeforeEach
     public void setUpStreams() {
@@ -31,6 +35,8 @@ public class MenuTest {
     @AfterEach
     public void restoreStreams() {
         System.setOut(originalOut);
+        System.setIn(originalIn);
+        outContent.reset();
     }
 
     @Test
@@ -69,7 +75,6 @@ public class MenuTest {
                     break;
                 }
             }
-
             assertTrue(implementsInterface, "The class 'Menu' should implement the interface 'MenuService'.");
         } catch (ClassNotFoundException e) {
             fail("The class 'Menu' could not be found", e);
@@ -78,7 +83,10 @@ public class MenuTest {
 
     @Test
     public void testDisplayMenuCallsGetMenuOptionsAndReturnsAtLeastFive() {
-        Menu menuMock = Mockito.spy(new Menu());
+        UserInputService userInputServiceMock = mock(UserInputService.class);
+        when(userInputServiceMock.nextLine()).thenReturn("svenska");
+        Menu menu = new Menu(userInputServiceMock);
+        Menu menuMock = Mockito.spy(menu);
         menuMock.displayMenu();
         verify(menuMock, times(1)).getMenuOptions();
         assertTrue(menuMock.getMenuOptions().size() >= 5, "'getMenuOptions()' should return at least 5 alternatives.");
@@ -86,14 +94,19 @@ public class MenuTest {
 
     @Test
     public void menuShouldHaveAtLeastFiveOptions() {
-        Menu menu = new Menu();
+        UserInputService userInputServiceMock = mock(UserInputService.class);
+        when(userInputServiceMock.nextLine()).thenReturn("svenska");
+        Menu menu = new Menu(userInputServiceMock);
         List<String> options = menu.getMenuOptions();
         assertTrue(options.size() >= 5, "The menu should contain at least 5 alternatives.");
     }
 
     @Test
     public void menuShouldPrintAtLeastFiveOptions() {
-        new Menu().displayMenu();
+        UserInputService userInputServiceMock = mock(UserInputService.class);
+        when(userInputServiceMock.nextLine()).thenReturn("svenska");
+        Menu menu = new Menu(userInputServiceMock);
+        menu.displayMenu();
         long count = outContent.toString().lines().count();
         assertTrue(count >= 5, "The menu should print out at least 5 alternatives.");
     }
@@ -104,14 +117,12 @@ public class MenuTest {
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
 
-        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outContent));
-        Menu menu = new Menu();
+        UserInputService userInputService = new UserInputService(mock(Menu.class));
+        Menu menu = new Menu(userInputService);
         menu.displayMenu();
 
         String consoleOutput = outContent.toString();
         assertTrue(consoleOutput.contains("Välj språk (svenska/engelska):"), "Menu should prompt for language selection.");
         assertTrue(consoleOutput.contains("Svenska valt."), "Menu should confirm Swedish language selection.");
     }
-
 }

@@ -1,6 +1,7 @@
 package se.ju23.typespeeder.entity;
 
 import jakarta.persistence.*;
+import se.ju23.typespeeder.util.Messages;
 
 @Entity
 @Table(name = "results")
@@ -10,16 +11,36 @@ public class Result {
     private int id;
 
     private int result;
+    private double timeResult; //hur lång tid ett game tar
+    private int amountResult; //antal rätt i procent
 
-    @ManyToOne
-    @JoinColumn(name = "userid", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "playername", referencedColumnName = "id")
     private Player player;
 
     public Result() {}
 
-    public Result(int result, Player player) {
+    public Result(int result, double timeResult, int amountResult, Player player) {
         this.result = result;
+        this.timeResult = timeResult;
+        this.amountResult = amountResult;
         this.player = player;
+    }
+
+    public double getTimeResult() {
+        return timeResult;
+    }
+
+    public void setTimeResult(double timeResult) {
+        this.timeResult = timeResult;
+    }
+
+    public int getAmountResult() {
+        return amountResult;
+    }
+
+    public void setAmountResult(int amountResult) {
+        this.amountResult = amountResult;
     }
 
     public int getResult() {
@@ -44,13 +65,26 @@ public class Result {
 
     @Override
     public String toString() {
-        return "Result{" +
-                "id=" + id +
-                ", result=" + result +
-                ", user=" + player +
-                '}';
+        return String.format("Playername: %s | XP: %d | Level: %d | Time: %.3f | Result: %d " +
+                        "| Percentage: %d",
+                player.getPlayername(), player.getXP(), player.getLevel(), timeResult, result, amountResult);
     }
 
+    public String toLocalizedString(Messages messages) {
+        return String.format("%s: %s | %s: %d | %s: %d | %s: %.3f | %s: %d | %s: %d%%",
+                messages.get("player.name"), player.getPlayername(),
+                messages.get("player.xp"), player.getXP(),
+                messages.get("player.level"), player.getLevel(),
+                messages.get("results.time"), timeResult,
+                messages.get("results.result"), result,
+                messages.get("results.amount"), amountResult);
+    }
 
+    public String toLocalizedStringWithoutPlayer(Messages messages) {
+        return String.format("%s: %.3f | %s: %d | %s: %d%%",
+                messages.get("results.time"), timeResult,
+                messages.get("results.result"), result,
+                messages.get("results.amount"), amountResult);
+    }
 }
 

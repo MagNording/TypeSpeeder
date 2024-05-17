@@ -1,7 +1,9 @@
 package se.ju23.typespeeder;
 
 import org.junit.jupiter.api.Test;
+import se.ju23.typespeeder.entity.Player;
 import se.ju23.typespeeder.ui.Menu;
+import se.ju23.typespeeder.util.UserInputService;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -9,6 +11,9 @@ import java.io.InputStream;
 import java.io.PrintStream;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 
 public class MenuPerformanceTest {
 
@@ -18,8 +23,10 @@ public class MenuPerformanceTest {
 
     @Test
     public void testGetMenuOptionsExecutionTime() {
+        UserInputService userInputService = mock(UserInputService.class);
+        when(userInputService.nextLine()).thenReturn("svenska");
         long startTime = System.nanoTime();
-        Menu menu = new Menu();
+        Menu menu = new Menu(userInputService);
         menu.getMenuOptions();
         long endTime = System.nanoTime();
 
@@ -33,25 +40,22 @@ public class MenuPerformanceTest {
         String input = "svenska\n";
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
-
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
 
+        UserInputService userInputService = mock(UserInputService.class);
+        when(userInputService.nextLine()).thenReturn("svenska", "exit");
+
         long startTime = System.nanoTime();
-
-        Menu menu = new Menu();
+        Menu menu = new Menu(userInputService);
         menu.displayMenu();
-
         long endTime = System.nanoTime();
-        long duration = (endTime - startTime) / MILLISECONDS_CONVERSION;
 
+        long duration = (endTime - startTime) / MILLISECONDS_CONVERSION;
         String consoleOutput = outContent.toString();
 
         assertTrue(consoleOutput.contains("Välj språk (svenska/engelska):"), "Menu should prompt for language selection.");
-
         assertTrue(consoleOutput.contains("Svenska valt."), "Menu should confirm Swedish language selection.");
-
-
         assertTrue(duration <= MAX_EXECUTION_TIME_LANGUAGE_SELECTION, "Menu display and language selection took too long. Execution time: " + duration + " ms.");
     }
 

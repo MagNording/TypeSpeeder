@@ -1,38 +1,57 @@
 package se.ju23.typespeeder.entity;
 
 import jakarta.persistence.*;
+import se.ju23.typespeeder.util.Messages;
 
-
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "players")
 public class Player {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private int id;
 
     private String username;
     private String password;
-    @Column(name = "role")
-    @Enumerated(EnumType.STRING)
-    private Role role;
     private String playername;
+    private int XP; // får xp från result
+    private int level; //++ för varje 100e XP
 
-    @OneToMany(mappedBy = "players", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "player", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Result> results;
 
     public Player() {}
 
-    public Player(String username, String password, Role role, String playername) {
+    public Player(String username, String password, String playername, int XP, int level,
+                  List<Result> results) {
         this.username = username;
         this.password = password;
         this.playername = playername;
-        this.role = role;
+        this.XP = XP;
+        this.level = level;
+        this.results = results;
     }
 
+    public int getXP() {
+        return XP;
+    }
 
-    public long getId() {
+    public void setXP(int XP) {
+        this.XP = XP;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public int getId() {
         return id;
     }
 
@@ -50,14 +69,6 @@ public class Player {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
     }
 
     public String getPlayername() {
@@ -78,14 +89,32 @@ public class Player {
 
     @Override
     public String toString() {
-        return "Player{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", role=" + role +
-                ", playername='" + playername + '\'' +
-                ", results=" + results +
-                '}';
+        return String.format("Playername: %s | XP: %d | Level: %d", playername, XP, level);
     }
+
+    public String generateResultsTable(Messages messages) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(messages.get("player.name")).append(": ").append(playername).append(" | ")
+                .append(messages.get("player.xp")).append(": ").append(XP).append(" | ")
+                .append(messages.get("player.level")).append(": ").append(level).append("\n");
+        sb.append(messages.get("results.latest")).append("\n");
+
+        if (results != null && !results.isEmpty()) {
+            // Sort results by ID in descending order to get the latest ones
+            results.sort(Comparator.comparingInt(Result::getId).reversed());
+
+            // Get the latest 10 results
+            List<Result> latestResults = results.stream().limit(10).toList();
+
+            for (Result result : latestResults) {
+                sb.append(result.toLocalizedStringWithoutPlayer(messages)).append("\n");
+            }
+        } else {
+            sb.append(messages.get("results.noResults")).append("\n");
+        }
+
+        return sb.toString();
+    }
+
 }
 
