@@ -94,7 +94,9 @@ public class MenuTest {
 
     @Test
     public void menuShouldHaveAtLeastFiveOptions() {
-        Menu menu = new Menu(mock());
+        UserInputService userInputServiceMock = mock(UserInputService.class);
+        when(userInputServiceMock.nextLine()).thenReturn("svenska");
+        Menu menu = new Menu(userInputServiceMock);
         List<String> options = menu.getMenuOptions();
         assertTrue(options.size() >= 5, "The menu should contain at least 5 alternatives.");
     }
@@ -115,7 +117,7 @@ public class MenuTest {
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
 
-        UserInputService userInputService = new UserInputService();
+        UserInputService userInputService = new UserInputService(mock(Menu.class));
         Menu menu = new Menu(userInputService);
         menu.displayMenu();
 

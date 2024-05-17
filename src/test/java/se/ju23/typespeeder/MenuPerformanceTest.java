@@ -24,7 +24,7 @@ public class MenuPerformanceTest {
     @Test
     public void testGetMenuOptionsExecutionTime() {
         UserInputService userInputService = mock(UserInputService.class);
-        when(userInputService.nextLine()).thenReturn("exit");
+        when(userInputService.nextLine()).thenReturn("svenska");
         long startTime = System.nanoTime();
         Menu menu = new Menu(userInputService);
         menu.getMenuOptions();

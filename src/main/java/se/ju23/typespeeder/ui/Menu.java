@@ -11,7 +11,12 @@ import java.util.List;
 public class Menu implements MenuService {
 
     private final UserInputService userInputService;
-    private String language = "sv";
+    private String language;
+
+    public Menu(UserInputService userInputService) {
+        this.userInputService = userInputService;
+        promptLanguageChoice();
+    }
 
     public void setLanguage(String language) {
         this.language = language;
@@ -21,17 +26,13 @@ public class Menu implements MenuService {
         return language;
     }
 
-    public Menu(UserInputService userInputService) {
-        this.userInputService = userInputService;
-    }
-
-    public void loginMenu(){
-        System.out.print("""
-            Please choose an option below:
-            1 - Login
-            2 - Create new player
-            3 - Exit Program
-            >\s""");
+    public void loginMenu() {
+        Messages messages = new Messages(language);
+        System.out.println(messages.get("login.menu.prompt"));
+        System.out.println(messages.get("login.menu.option1"));
+        System.out.println(messages.get("login.menu.option2"));
+        System.out.println(messages.get("login.menu.option3"));
+        System.out.print(">\s");
     }
 
     @Override
@@ -47,10 +48,16 @@ public class Menu implements MenuService {
         return options;
     }
 
+    public void displayMenu() {
+        List<String> menuOptions = getMenuOptions();
+        System.out.println("Menu Options - " +
+                (language.equals("sv") ? "svenska" : "english") + ": ");
+        menuOptions.forEach(System.out::println);
+    }
 
-    public void languageChoice() {
+    public void promptLanguageChoice() {
         String selectedLanguage = "";
-        System.out.println("Välj språk (svenska/engelska):");
+        System.out.print("Välj språk (svenska/engelska): \n> ");
         while (!selectedLanguage.equals("svenska") && !selectedLanguage.equals("engelska")) {
             selectedLanguage = userInputService.nextLine().toLowerCase().trim();
 
@@ -65,15 +72,5 @@ public class Menu implements MenuService {
                     System.out.println("Invalid language selection. Please try again.");
             }
         }
-    }
-
-    public void displayMenu() {
-        if(language == null){
-            languageChoice();
-        }
-        List<String> menuOptions = getMenuOptions();
-        System.out.println("Menu Options - " +
-                (language.equals("sv") ? "Svenska" : "English") + ": ");
-        menuOptions.forEach(System.out::println);
     }
 }

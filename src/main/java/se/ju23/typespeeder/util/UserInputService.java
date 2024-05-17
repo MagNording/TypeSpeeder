@@ -1,19 +1,30 @@
 package se.ju23.typespeeder.util;
 
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import se.ju23.typespeeder.ui.Menu;
 
 import java.util.Scanner;
 
 @Service
 public class UserInputService {
+
     private static final Scanner input = new Scanner(System.in);
+
+    @Lazy
+    private final Menu menu;
+
+    public UserInputService(@Lazy Menu menu) {
+        this.menu = menu;
+    }
 
     public String nextLine() {
         return input.nextLine();
     }
 
     public void intro() {
-        System.out.println("Welcome to TypeSpeeder!");
+        Messages messages = new Messages(menu.getLanguage());
+        System.out.println(messages.get("welcome.message"));
     }
 
     public void invalidChoice() {
@@ -21,26 +32,18 @@ public class UserInputService {
     }
 
     public int getIntInput() {
-        String line = input.nextLine();
-        try {
-            return Integer.parseInt(line);
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid input. Please enter a valid integer.");
-            return getIntInput();
-        }
-    }
-
-    public boolean hasNextInt() {
-        return input.hasNextInt();
-    }
-
-    public void consumeNextLine() {
-        if (input.hasNextLine()) {
-            input.nextLine();
+        while (true) {
+            String line = input.nextLine();
+            try {
+                return Integer.parseInt(line);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid integer.");
+            }
         }
     }
 
     public void outtro() {
-        System.out.println("Thank you, welcome back!");
+        Messages messages = new Messages(menu.getLanguage());
+        System.out.println(messages.get("thankyou.message"));
     }
 }

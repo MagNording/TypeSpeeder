@@ -1,6 +1,8 @@
 package se.ju23.typespeeder;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import se.ju23.typespeeder.ui.Menu;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -32,7 +34,11 @@ public class NewsLetterTest {
 
             assertTrue(contentField.getType().equals(String.class), "Field 'content' should be of type String.");
 
-            Object instance = newsLetterClass.getDeclaredConstructor().newInstance();
+            // Mocka Menu, skapa instans av NewsLetter
+            Menu mockMenu = Mockito.mock(Menu.class);
+            Mockito.when(mockMenu.getLanguage()).thenReturn("en");
+            Object instance = newsLetterClass.getDeclaredConstructor(Menu.class).newInstance(mockMenu);
+
             Field field = newsLetterClass.getDeclaredField("content");
             field.setAccessible(true);
             String contentValue = (String) field.get(instance);
@@ -41,7 +47,7 @@ public class NewsLetterTest {
             assertTrue(contentValue.length() <= 200, "Content field length should be at most 200 characters.");
 
         } catch (ClassNotFoundException | NoSuchFieldException | NoSuchMethodException |
-                 InstantiationException | IllegalAccessException | java.lang.reflect.InvocationTargetException e) {
+                 InstantiationException | IllegalAccessException | InvocationTargetException e) {
             fail("Error occurred while testing NewsLetter content field length.", e);
         }
     }
@@ -56,7 +62,11 @@ public class NewsLetterTest {
 
             assertTrue(publishDateTime.getType().equals(LocalDateTime.class), "Field 'publishDateTime' should be of type LocalDateTime.");
 
-            Object instance = someClass.getDeclaredConstructor().newInstance();
+            // Mock Menu and create instance of NewsLetter
+            Menu mockMenu = Mockito.mock(Menu.class);
+            Mockito.when(mockMenu.getLanguage()).thenReturn("en");
+            Object instance = someClass.getDeclaredConstructor(Menu.class).newInstance(mockMenu);
+
             LocalDateTime dateTimeValue = (LocalDateTime) publishDateTime.get(instance);
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -66,7 +76,6 @@ public class NewsLetterTest {
 
             Method getterMethod = someClass.getDeclaredMethod("getPublishDateTime");
             assertNotNull(getterMethod, "Getter method for the field 'publishDateTime' should exist.");
-
 
         } catch (ClassNotFoundException | NoSuchFieldException | NoSuchMethodException e) {
             fail("Error occurred while testing properties of NewsLetter.", e);

@@ -11,11 +11,11 @@ import java.util.List;
 @Component
 public class ChallengeMenu implements MenuService {
 
-    @Autowired
-    Menu menu;
+    private final Menu menu;
 
-    @Autowired
-    UserInputService inputService;
+    public ChallengeMenu(Menu menu) {
+        this.menu = menu;
+    }
 
     @Override
     public void displayMenu() {

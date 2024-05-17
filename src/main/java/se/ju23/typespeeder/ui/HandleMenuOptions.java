@@ -75,6 +75,7 @@ public class HandleMenuOptions {
                         menu.setLanguage("sv");
                     }
                     gameService.updateMessages();
+                    newsLetter.updateContent();
                 }
                 default -> {
                     System.out.println("Invalid option. Please try again.");
