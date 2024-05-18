@@ -1,9 +1,7 @@
 package se.ju23.typespeeder.ui;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import se.ju23.typespeeder.util.Messages;
-import se.ju23.typespeeder.util.UserInputService;
 
 import java.util.ArrayList;
 import java.util.List;

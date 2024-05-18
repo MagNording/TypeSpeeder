@@ -63,8 +63,8 @@ public class Challenge {
         }
     }
 
-    private String colorize(String text, String colorCode, String resetCode) {
-        return colorCode + text + resetCode;
+    private String colorize(String text) {
+        return Challenge.CYAN + text + Challenge.RESET;
     }
 
     public String lettersToType(List<String> wordsToType) {
@@ -116,7 +116,7 @@ public class Challenge {
             if (wait.equals("0")) break;
 
             String targetWords = generateTargetWords();
-            targetWords = colorize(targetWords, CYAN, RESET);
+            targetWords = colorize(targetWords);
             System.out.println(targetWords);
 
             double startTime = System.currentTimeMillis();
@@ -191,7 +191,7 @@ public class Challenge {
             if (wait.equals("0")) break;
 
             String targetWords = lettersToType(WordsToType.randomizeWords(WordsToType.characters));
-            targetWords = colorize(targetWords, CYAN, RESET);
+            targetWords = colorize(targetWords);
             System.out.println(targetWords);
 
             double startTime = System.currentTimeMillis();

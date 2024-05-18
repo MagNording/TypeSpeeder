@@ -3,7 +3,6 @@ package se.ju23.typespeeder.ui;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import se.ju23.typespeeder.NewsLetter;

@@ -69,7 +69,7 @@ public class Menu implements MenuService {
                     System.out.println("English chosen.");
                     language = "en"; }
                 default ->
-                    System.out.println("Invalid language selection. Please try again.");
+                        System.out.println("Invalid choice. Please try again.");
             }
         }
     }
