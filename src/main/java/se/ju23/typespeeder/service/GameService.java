@@ -25,7 +25,7 @@ public class GameService {
 
     }
 
-    // to accept a temporary EntityManager
+    // Temporär EntityManager
     public GameService(EntityManager entityManager, Menu menu) {
         this.entityManager = entityManager;
         this.menu = menu;

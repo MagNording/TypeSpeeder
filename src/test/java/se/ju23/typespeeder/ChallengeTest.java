@@ -17,6 +17,7 @@ public class ChallengeTest {
             fail("Challenge class could not be found.");
         }
     }
+
     @Test
     public void testLettersToTypeMethodExists() {
         try {
@@ -27,6 +28,7 @@ public class ChallengeTest {
             fail("The method 'lettersToType' could not be found in the Challenge class.");
         }
     }
+
     @Test
     public void testStartChallengeMethodExists() {
         try {

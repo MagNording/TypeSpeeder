@@ -105,7 +105,7 @@ public class HandleMenuOptions {
                 case 1 -> challenge.startChallenge(player);
                 case 2 -> showPlayerResults(player, messages);
                 case 3 -> showTopResults();
-                case 4 -> System.out.println(messages.get("exit.message"));
+                case 4 -> System.out.println(messages.get("challenge.menu.exit"));
                 default -> System.out.println(messages.get("invalid.option"));
             }
         } while (option != 4);
@@ -145,7 +145,7 @@ public class HandleMenuOptions {
                 case 1 -> playerService.editUserName(player);
                 case 2 -> playerService.editPassword(player);
                 case 3 -> playerService.editPlayerName(player);
-                case 4 -> System.out.println(messages.get("exit.message"));
+                case 4 -> System.out.println(messages.get("update.menu.exit"));
                 default -> System.out.println(messages.get("invalid.option"));
             }
         } while (option != 4);

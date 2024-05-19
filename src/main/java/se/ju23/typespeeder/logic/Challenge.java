@@ -5,8 +5,8 @@ import org.springframework.stereotype.Component;
 import se.ju23.typespeeder.entity.Player;
 import se.ju23.typespeeder.repositories.ResultRepo;
 import se.ju23.typespeeder.service.PlayerService;
-import se.ju23.typespeeder.ui.ChallengeMenu;
 import se.ju23.typespeeder.ui.Menu;
+import se.ju23.typespeeder.util.Messages;
 import se.ju23.typespeeder.util.UserInputService;
 import se.ju23.typespeeder.entity.Result;
 
@@ -18,22 +18,28 @@ public class Challenge {
     private static final String CYAN = "\u001B[36m";
     private static final String RESET = "\u001B[0m";
 
-    @Autowired
-    ChallengeMenu challengeMenu;
+    private final UserInputService userInputService;
+    private final Menu menu;
+    private final ResultRepo resultRepo;
+    private final PlayerService playerService;
+
+    private Messages messages;
 
     @Autowired
-    UserInputService userInputService;
+    public Challenge(UserInputService userInputService, ResultRepo resultRepo, PlayerService playerService, Menu menu) {
+        this.userInputService = userInputService;
+        this.resultRepo = resultRepo;
+        this.playerService = playerService;
+        this.messages = new Messages(menu.getLanguage());
+        this.menu = menu;
+    }
 
-    @Autowired
-    Menu menu;
-
-    @Autowired
-    ResultRepo resultRepo;
-
-    @Autowired
-    PlayerService playerService;
+    public void updateMessages() {
+        this.messages = new Messages(menu.getLanguage());
+    }
 
     public void startChallenge(Player player) {
+        updateMessages();
         int choice;
         do {
             displayMainMenu();
@@ -41,26 +47,15 @@ public class Challenge {
             switch (choice) {
                 case 1 -> startGame(player);
                 case 2 -> startCharacterGame(player);
-                case 3 -> System.out.println("Returning to main menu...");
-                default -> System.out.println("Invalid option. Please try again.");
+                case 3 -> System.out.println(messages.get("menu.exit"));
+                default -> System.out.println(messages.get("invalid.option"));
             }
         } while (choice != 3);
     }
 
     private void displayMainMenu() {
-        if (menu.getLanguage().equals("svenska")) {
-            System.out.println("""
-                1. Starta ett Ordspel
-                2. Starta ett Bokstavsspel
-                3. Åter till spelmenyn
-                """);
-        } else {
-            System.out.println("""
-                1. Start a words game
-                2. Start a single character game
-                3. Back to game menu
-                """);
-        }
+        updateMessages();
+        System.out.println(messages.get("challenge.menu.main"));
     }
 
     private String colorize(String text) {
@@ -72,37 +67,13 @@ public class Challenge {
     }
 
     public void getStandardGameInstructions() {
-        if (menu.getLanguage().equals("svenska")) {
-            System.out.println("""
-                Ett antal ord kommer att visas, skriv av orden.
-                När du skrivit klart, tryck ENTER.
-                Tryck på ENTER när du är redo att starta
-                eller tryck '0' och ENTER för att avbryta!
-                """);
-        } else {
-            System.out.println("""
-                A number of words will be displayed.
-                Type the words, when you're finished, press Enter.
-                Press Enter when ready to start
-                or press '0' and Enter to exit!
-                """);
-        }
+        updateMessages();
+        System.out.println(messages.get("challenge.instructions.standard"));
     }
 
     public void getSpecialCharGameInstructions() {
-        if (menu.getLanguage().equals("svenska")) {
-            System.out.println("""
-                Skriv in de tecken som visas samt mellanrum.
-                När du skrivit klart, tryck ENTER!
-                Tryck på ENTER när du är redo att starta!
-                """);
-        } else {
-            System.out.println("""
-                Enter the characters as they appear,
-                including the spaces. When done, press ENTER.
-                Press ENTER when ready to start!
-                """);
-        }
+        updateMessages();
+        System.out.println(messages.get("challenge.instructions.special"));
     }
 
     public void startGame(Player loggedInPlayer) {
@@ -131,27 +102,14 @@ public class Challenge {
     }
 
     private void displayDifficultyMenu() {
-        if (menu.getLanguage().equals("svenska")) {
-            System.out.println("""
-                1.Starta lätt spel
-                2.Starta svårt spel(skiftlägeskänsligt)
-                0.Avsluta
-                """);
-        } else {
-            System.out.println("""
-                1.Start easy game
-                2.Start hard game(case sensitive)
-                0.Exit
-                """);
-        }
+        updateMessages();
+        System.out.println(messages.get("challenge.menu.difficulty"));
     }
 
     private String generateTargetWords() {
-        if (menu.getLanguage().equals("svenska")) {
-            return lettersToType(WordsToType.randomizeWords(WordsToType.words));
-        } else {
-            return lettersToType(WordsToType.randomizeWords(WordsToType.englishWords));
-        }
+        return menu.getLanguage().equals("svenska")
+                ? lettersToType(WordsToType.randomizeWords(WordsToType.words))
+                : lettersToType(WordsToType.randomizeWords(WordsToType.englishWords));
     }
 
     private void displayResults(Player loggedInPlayer, String targetWords, double elapsedTimeInSeconds, int[] accuracy) {
@@ -159,15 +117,9 @@ public class Challenge {
         int mistakesCount = accuracy[1];
         String formattedAccuracy = String.format("%d", accuracyPercentage);
 
-        if (menu.getLanguage().equals("svenska")) {
-            System.out.println("Det tog " + elapsedTimeInSeconds + " sekunder att skriva klart!\n" +
-                    "Du hade en precision på " + formattedAccuracy + "%");
-            System.out.println("Du hade " + mistakesCount + " fel");
-        } else {
-            System.out.println("It took " + elapsedTimeInSeconds + " seconds to finish!\n" +
-                    "Your precision was " + formattedAccuracy + "%");
-            System.out.println("You made " + mistakesCount + " mistakes");
-        }
+        System.out.println(messages.get("challenge.results.time").formatted(elapsedTimeInSeconds));
+        System.out.println(messages.get("challenge.results.accuracy").formatted(formattedAccuracy));
+        System.out.println(messages.get("challenge.results.mistakes").formatted(mistakesCount));
 
         int points = calcTotalPoints(accuracyPercentage, elapsedTimeInSeconds);
         saveResults(loggedInPlayer, elapsedTimeInSeconds, accuracyPercentage, points);
@@ -185,7 +137,6 @@ public class Challenge {
 
     public void startCharacterGame(Player loggedInPlayer) {
         do {
-            Result result = new Result();
             getSpecialCharGameInstructions();
             String wait = userInputService.nextLine();
             if (wait.equals("0")) break;
@@ -235,7 +186,6 @@ public class Challenge {
             }
         }
 
-        // Räkna de extra tecknen i spelarinmatningen som felaktiga
         mistakeCount += maxLength - minLength;
 
         int accuracy = (int) ((double) correctCount / maxLength * 100);
@@ -259,14 +209,12 @@ public class Challenge {
             }
         }
 
-        // Räkna de extra tecknen i spelarinmatningen som felaktiga
         mistakeCount += maxLength - minLength;
 
         int accuracy = (int) ((double) correctCount / maxLength * 100);
         return new int[]{accuracy, mistakeCount, correctCount};
     }
 
-    // Metod för att ta bort ANSI-koder från en sträng
     public static String removeAnsiCodes(String input) {
         return input.replaceAll("\u001B\\[[;\\d]*m", "");
     }
