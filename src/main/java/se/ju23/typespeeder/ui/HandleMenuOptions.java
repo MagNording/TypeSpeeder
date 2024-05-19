@@ -58,29 +58,41 @@ public class HandleMenuOptions {
             Player player = authenticationService.getPlayer();
 
             switch (option) {
-                case 1 -> challengeMenu(player);
-                case 2 -> { userInputService.outtro();
-                    System.exit(0);}
-                case 3 -> editUserMenu(player);
+                case 1 -> handleChallengeMenu(player);
+                case 2 -> exitApplication();
+                case 3 -> handleEditUserMenu(player);
                 case 4 -> gameService.printTopResults();
                 case 5 -> System.out.println(newsLetter.getContent());
-                case 6 -> {
-                    String language = menu.getLanguage();
-                    if (language.equals("sv")) {
-                        System.out.println("Switching to English...");
-                        menu.setLanguage("en");
-                    } else {
-                        System.out.println("Byter till svenska...");
-                        menu.setLanguage("sv");
-                    }
-                    gameService.updateMessages();
-                    newsLetter.updateContent();
-                }
-                default -> {
-                    System.out.println("Invalid option. Please try again.");
-                }
+                case 6 -> handleLanguageSwitch();
+                default -> System.out.println("Invalid option. Please try again.");
             }
         } while (option != 2);
+    }
+
+    private void handleChallengeMenu(Player player) {
+        challengeMenu(player);
+    }
+
+    private void exitApplication() {
+        userInputService.outtro();
+        System.exit(0);
+    }
+
+    private void handleEditUserMenu(Player player) {
+        editUserMenu(player);
+    }
+
+    private void handleLanguageSwitch() {
+        String language = menu.getLanguage();
+        if (language.equals("sv")) {
+            System.out.println("Switching to English...");
+            menu.setLanguage("en");
+        } else {
+            System.out.println("Byter till svenska...");
+            menu.setLanguage("sv");
+        }
+        gameService.updateMessages();
+        newsLetter.updateContent();
     }
 
     public void challengeMenu(Player player) {
@@ -91,32 +103,36 @@ public class HandleMenuOptions {
             option = userInputService.getIntInput();
             switch (option) {
                 case 1 -> challenge.startChallenge(player);
-                case 2 -> {
-                    EntityManager em = entityManagerFactory.createEntityManager();
-                    em.getTransaction().begin();
-
-                    Player managedPlayer = em.find(Player.class, player.getId());
-                    managedPlayer.getResults().size();
-
-                    System.out.println(managedPlayer.generateResultsTable(messages));
-
-                    em.getTransaction().commit();
-                    em.close();
-                }
-                case 3 -> {
-                    EntityManager em = entityManagerFactory.createEntityManager();
-                    em.getTransaction().begin();
-
-                    GameService gameService = new GameService(em, menu);
-                    gameService.printTopResults();
-
-                    em.getTransaction().commit();
-                    em.close();
-                }
+                case 2 -> showPlayerResults(player, messages);
+                case 3 -> showTopResults();
                 case 4 -> System.out.println(messages.get("exit.message"));
                 default -> System.out.println(messages.get("invalid.option"));
             }
         } while (option != 4);
+    }
+
+    private void showPlayerResults(Player player, Messages messages) {
+        EntityManager em = entityManagerFactory.createEntityManager();
+        em.getTransaction().begin();
+
+        Player managedPlayer = em.find(Player.class, player.getId());
+        managedPlayer.getResults().size();
+
+        System.out.println(managedPlayer.generateResultsTable(messages));
+
+        em.getTransaction().commit();
+        em.close();
+    }
+
+    private void showTopResults() {
+        EntityManager em = entityManagerFactory.createEntityManager();
+        em.getTransaction().begin();
+
+        GameService gameService = new GameService(em, menu);
+        gameService.printTopResults();
+
+        em.getTransaction().commit();
+        em.close();
     }
 
     public void editUserMenu(Player player) {
@@ -140,5 +156,4 @@ public class HandleMenuOptions {
         patch.setPatchVersion("1.5.2");
         System.out.println("Version: " + patch.getPatchVersion());
     }
-
 }
